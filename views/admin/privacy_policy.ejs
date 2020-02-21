@@ -1,0 +1,49 @@
+<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Privacy Policy</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  enctype='multipart/form-data' id="about" method="post" action="update_policy" name="ckform">
+                                    <div class="row clearfix">
+                                       
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <textarea id="ckeditor" name="policy" class="form-control" required><%=response.privacyPolicy %>
+                                                  </textarea> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                     <div class="form-group">
+                                         <input type="submit" id="updatebtn"   id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Update">
+                                         <span id="message"></span>
+                                    </div>
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
+    <% include  layout/footer.ejs %>
+<script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+<script>
+   CKEDITOR.replace( 'policy' );
+   CKEDITOR.config.height = 400;
+</script>
+   

@@ -1,0 +1,181 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-3">
+                    <div class="card profile-card">
+                        <div class="profile-header">&nbsp;</div>
+                        <div class="profile-body">
+                            <div class="image-area">
+                                <% if(response.image=="") { %>
+                                <img src="../images/user.png" id="blah2" alt="Profile Image" />
+                                <% } else { %>
+                                 <img src="../images/admin/<%=response.image%>" id="blah2" alt="Profile Image" />
+                                <% } %>
+                            </div>
+                            <div class="content-area">
+                                <h3><%=response.name%></h3>
+                                <p>Administrator</p>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="col-xs-12 col-sm-9">
+                    <div class="card">
+                        <div class="body">
+                            <div>
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation"  class="active" ><a href="#profile_settings" aria-controls="settings" role="tab" data-toggle="tab">Profile Settings</a></li>
+                                    <li role="presentation"><a href="#change_password_settings" aria-controls="settings" role="tab" data-toggle="tab">Change Password</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                   
+                                    <div role="tabpanel" class="tab-pane fade in active" id="profile_settings">
+                                        <form class="form-horizontal" enctype='multipart/form-data' method="post" action="updateadminprofile" id="profile">
+                                            <div class="form-group">
+                                                 <input type="hidden" class="form-control" name="hiddenimage" name="name" value="<%=response.image %>">
+                                                 <input type="hidden" name="id" name="id" value="1">
+                                                <label for="NameSurname" class="col-sm-2 control-label">Name</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-line">
+                                                        <input type="text" class="form-control" id="NameSurname" name="name" placeholder="Name Surname" value="<%=response.name %>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                    <label for="Phone" class="col-sm-2 control-label">Phone</label>
+                                                    <div class="col-sm-10">
+                                                        <div class="form-line">
+                                                            <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone" value="<%=response.phone %>" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="form-group">
+                                                <label for="Email" class="col-sm-2 control-label">Email</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-line">
+                                                        <input type="email" class="form-control" id="Email" name="email" placeholder="Email" value="<%=response.email %>" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="Email" class="col-sm-2 control-label">Profile Image</label>
+                                                <div class="col-sm-10">
+                                                    <div class="form-line">
+                                                        <input type="file" class="form-control" id="profieimage" name="profieimage">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-2 col-sm-10">
+                                                    <button type="submit" class="btn btn-danger">SUBMIT</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane fade in" id="change_password_settings">
+                                        <form class="form-horizontal" enctype='multipart/form-data' method="post" action="updateadminpassword" >
+                                             <input type="hidden" name="id" name="id" value="1">
+                                             <div class="form-group">
+                                                <label for="oldPassword" class="col-sm-3 control-label">Old Password</label>
+                                                <div class="col-sm-9">
+                                                    <div class="form-line">
+                                                        <input type="password" class="form-control" id="n1_password" name="oldPassword" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           <div class="form-group">
+                                                <label for="NewPassword" class="col-sm-3 control-label">New Password</label>
+                                                <div class="col-sm-9">
+                                                    <div class="form-line">
+                                                        <input type="password" class="form-control" id="n_password" name="NewPassword" placeholder="" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="NewPasswordConfirm" class="col-sm-3 control-label">Confirm Password</label>
+                                                <div class="col-sm-9">
+                                                    <div class="form-line">
+                                                        <input type="password" class="form-control" id="c_password" name="NewPasswordConfirm" placeholder="" required>
+                                                    </div>
+                                                     <span id="message"></span>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-sm-offset-3 col-sm-9">
+                                                    <button id="updatebtn" disabled type="submit" class="btn btn-danger">SUBMIT</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script type="text/javascript">
+   $('#c_password').on('keyup',function(){
+    if($('#c_password').val() == $('#n_password').val()){
+      $('#message').html('Confirmed Password Matching').css('color','green');
+      $('#updatebtn').removeAttr("disabled");
+    }else{
+      $('#message').html('Confirmed Password Not  Matching').css('color','red');
+      $('#updatebtn').attr("disabled","disabled");
+    }
+   });
+
+   $('#blah2').click(function(){
+ $('#profieimage').click();
+ });
+   $.validator.addMethod("lettersonly", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z ]+$/i.test(value);
+  }, 'For your name please use alphabets only');
+  jQuery.validator.addMethod("Email", function(value, element) {
+  // allow any non-whitespace characters as the host part
+  return this.optional( element ) || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( value );
+}, 'Please enter a valid email address.');
+
+  $("#profile").validate({
+    rules: {
+      name: {
+        required: true,
+        lettersonly: true
+      },
+      email: {
+        required: true,
+        Email: true
+      },
+      phone: {
+        required: true,
+        minlength:10,
+        maxlength:12
+      }
+    },
+    messages: {
+      name: {
+        required: "Name field is required."
+
+      },
+      email: {
+        required: "Email field is required.",
+      },
+      phone: {
+        required: "This field is required.",
+        minlength: "Please enter atleast 10 digits", 
+        maxlength: "Please enter no more than 12 digits", 
+      }
+    }
+
+  });
+</script>

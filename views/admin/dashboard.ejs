@@ -1,0 +1,264 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.iconify.design/1/1.0.4/iconify.min.js"></script>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>DASHBOARD</h2>
+            </div>
+
+            <!-- Widgets -->
+            <div class="row clearfix">
+                
+                <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                    <a href="../admin/userslist" style="text-decoration:none;">
+                    <div class="info-box bg-cyan hover-expand-effect" style="height: 100px;
+                    width: 219px;">
+                        <div class="icon">
+                           <i class="material-icons">people</i>
+                        </div>
+                        <div class="content">
+                            <div class="text">USERS </div>
+                            <div id="usercount" class="number count-to" data-from="0" data-to="<%=countdata.user_count%>" data-speed="1000" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </a>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <a href="../admin/categories"  style="text-decoration:none;">
+                    <div class="info-box bg-pink hover-expand-effect" style="height: 100px;
+                    width: 219px;">
+                        <div class="icon">
+                            <i class="material-icons">widgets</i> </div>
+                        <div class="content">
+                            <div class="text">CATEGORIES</div>
+                            <div id="category" class="number count-to" data-from="0" data-to="<%=countdata.category%>" data-speed="15" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                </a>  
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <a href=""  style="text-decoration:none;">
+                    <div class="info-box bg-blue hover-expand-effect" style="height: 100px;
+                    width: 219px;">
+                        <div class="icon">
+                             <i class="fa fa-tree" style="font-size:35px"></i>
+                        </div>
+                        <div class="content">
+                            
+                            <div class="text">POSTS</div>
+                            <div id="tree" class="number count-to" data-from="0" data-to="" data-speed="15" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+     
+            </div>
+            <!-- #END# Widgets -->
+            <div class="row clearfix">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                        <div class="col-md-12">
+                                <h2>Users</h2>
+                            </div>
+                         </div>
+                       
+                    </div>
+                    <div class="body">
+                         <canvas style="height: 230px;  margin: 0 auto" id="canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                        <div class="header">
+                                <div class="row clearfix">
+                                <div class="col-md-12">
+                                        <h2>Overviews</h2>
+                                    </div>
+                                 </div>
+                               
+                            </div>
+                     <div class="body">
+                       <div id="pie_chart" style="height: 230px; margin: 0 auto"></div>
+                    </div>
+                    </div>
+            </div>
+        </div>
+            <div class="row clearfix">
+                <!-- Task Info-->
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Categories</h2>
+                         </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-hover dashboard-task-infos">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Category Name</th>
+                                           
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(let i in countdata.catdata) { %>                        
+                                        <tr>
+                                            <td><%=parseInt(i)+1%></td>
+                                            <td><%=countdata.catdata[i].name%></td>
+                                      </tr>
+                                      <% } %>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Top Users</h2>
+                         </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-hover dashboard-task-infos">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
+                                            <th>Country</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(let i in countdata.newusers) { %>
+                                        <tr>
+                                            <td><%=parseInt(i)+1%></td>
+                                            <td><%=countdata.newusers[i].username%></td>
+                                            <td><%=countdata.newusers[i].email%></td>
+                                            <td><%=countdata.newusers[i].country%></td>
+                                      </tr>
+                                        <% } %>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- #END# Task Info -->
+                
+                <!-- #END# Browser Usage -->
+            </div>
+        </div>
+    </section>
+
+<%include layout/footer.ejs %>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script>
+    var chartData = {};
+    $.get('/admin/get_dashboard_count', function (data) {
+
+         chartData = data;
+        renderChart(data);
+      });
+</script>
+
+<script>
+ var  usercount= $('#usercount').attr('data-to');
+ var  category= $('#category').attr('data-to');
+ piechart(usercount);
+  function piechart(usercount) {
+   Highcharts.chart('pie_chart', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: ''
+    },
+   
+    series: [{
+        name: 'Counts',
+        colorByPoint: true,
+        data: [{
+            name: 'Users',
+            y: parseInt(usercount)
+        },{
+            name: 'categories',
+            y: parseInt(category)
+        },
+       ]
+    }]
+});
+}
+ function renderChart(ChartData) {
+    var date = new Date();
+    var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    var monthDays = [];
+
+    var Allmonth = []
+    var currentMonth = new Date().getMonth();
+    var month = new Array();
+    month[0] = "January";
+    month[1] = "February";
+    month[2] = "March";
+    month[3] = "April";
+    month[4] = "May";
+    month[5] = "June";
+    month[6] = "July";
+    month[7] = "August";
+    month[8] = "September";
+    month[9] = "October";
+    month[10] = "November";
+    month[11] = "December";
+    currentMonth = month[currentMonth];
+    for (i = firstDay; i <= lastDay; i++) {
+      thisMonth = i + "\n" + currentMonth;
+      monthDays.push(thisMonth);
+    }
+
+    var config = {
+      type: 'line',
+      data: {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December',],
+        datasets: [{
+          label: 'Users',
+          fill: false,
+          backgroundColor: '#b90f5e',
+          borderColor: '#F44336 ',
+          data: ChartData.userData,
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: 'Current Year Analysis Details'
+        },
+        scales: {
+
+        }
+      }
+    };
+
+    //window.onload = function() {
+    var ctx = document.getElementById('canvas').getContext('2d');
+    window.myLine = new Chart(ctx, config);
+    // };
+  }
+</script>

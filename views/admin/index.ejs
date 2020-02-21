@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>VoteCast</title>
+    <!-- Favicon-->
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Core Css -->
+    <link href="../../plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Waves Effect Css -->
+    <link href="../../plugins/node-waves/waves.css" rel="stylesheet" />
+
+    <!-- Animation Css -->
+    <link href="../../plugins/animate-css/animate.css" rel="stylesheet" />
+
+    <!-- Custom Css -->
+    <link href="../../css/style.css" rel="stylesheet">
+</head>
+<style>
+.login-page {
+    background: #be305bf5;
+    padding-left: 0;
+    max-width: 360px;
+    margin: 10% auto;
+    background-size: 100% 100%;
+    overflow-x: hidden;
+}
+.card {
+    background: #ffffff8c !important;
+}
+.input-group input[type="email"],.input-group input[type="password"] {
+    background: transparent;
+    border-bottom: 1px solid #000;
+    color:#000;
+    padding-left: 10px !important;
+}
+</style>
+<body class="login-page">
+      <%if(msg && msg!=''){%>
+
+            <div data-notify="container" id="msg" class="bootstrap-notify-container alert alert-dismissible bg-red p-r-35 animated bounceInRight" role="alert" data-notify-position="top-left" style="display: inline-block; margin: 0px auto; position: fixed; transition: all 0.5s; z-index: 1031; top: 20px; right: 20px;"><span data-notify="icon"></span> <span data-notify="title"></span> <span data-notify="message"><%= msg%></span></div>
+     <% }%>
+    <div class="login-box animated zoomInUp">
+       
+        <div class="card">
+            <div class="body">
+              
+                <form id="sign_in" action="/admin/signin" method="POST">
+                    <div class="msg">
+                        <h1 style="color:#fff;">VoteCast</h1>
+              <!--   <img class="animated rotateInUpLeft" src="" style="height:120px; width:100px;">-->
+                       </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">person</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="email" class="form-control" name="username" placeholder="Username" required autofocus>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="material-icons">lock</i>
+                        </span>
+                        <div class="form-line">
+                            <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                       
+                        <div class="col-xs-12">
+                            <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../plugins/bootstrap/js/bootstrap.js"></script>
+
+    <!-- Waves Effect Plugin Js -->
+    <script src="../../plugins/node-waves/waves.js"></script>
+
+    <!-- Validation Plugin Js -->
+    <script src="../../plugins/jquery-validation/jquery.validate.js"></script>
+
+    <!-- Custom Js -->
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/pages/examples/sign-in.js"></script>
+</body>
+<script>
+       setTimeout(() => {
+        $("#msg").fadeOut('slow');
+       },3000);
+    </script>
+</html>

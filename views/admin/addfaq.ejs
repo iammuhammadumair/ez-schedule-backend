@@ -1,0 +1,61 @@
+<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Add FAQ</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  enctype='multipart/form-data' method="post" action="/admin/createdata" id="users">
+                                   
+                                    <div class="row clearfix">
+                                      <div class="col-sm-12">
+                                          <div class="">
+                                            <label for="" class="col-sm-5 control-label">Question :</label>
+                                              <div class="">
+                                                  <textarea type="text" id="ques"  rows="6" cols="100" name="ques" class="form-control" placeholder="" required></textarea>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      
+                                  </div>
+                                    <div class="row clearfix">
+                                      <div class="col-sm-12">
+                                        <div class="">
+                                          <label  class="col-sm-5  control-label">Answer :</label>
+                                            <div class="">
+                                                <textarea type="text" name="ans"  rows="6" cols="100" class="form-control" placeholder="" required></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                                             
+                                     <div class="form-group">
+                                         <input type="submit" id="updatebtn"  id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Submit">
+                                         <span id="message"></span>
+                                    </div>
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script>
+
+<script type="text/javascript">
+
+ 
+</script>

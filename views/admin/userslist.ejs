@@ -1,0 +1,161 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+<style>
+    .add{
+        color:#de7022 !important;
+    }
+    </style>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Users list</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Users Name</th>
+                                                <th>Email</th>
+                                                <th>Country</th>
+                                                <th>Gender</th>
+                                                <th class="text-center" >Image</th>
+                                                <th class="text-center">Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                            <% for(let i in response) { %>
+                                           
+                                             <tr>
+                                                <td><%=parseInt(i)+1%></td>
+                                                <td><%=response[i].username%></td>
+                                                <td><%=response[i].email%></td>
+                                                <td><%=response[i].country%></td>
+                                                <td><% if( response[i].gender==1){ %> Male
+                                                    <% }
+                                                      else{
+                                                     %>
+                                                    Female
+                                                    <% } %>
+                              
+                                                  </td>
+                                                <td class="text-center">
+                                                    <div class="image">
+                                                        <% if(response[i].profileImage=="") { %>                                                       
+                                                            <img src="../images/img.jpg" width="48" height="48" alt="">
+                                                        <% } else { %>
+                                                            <img src="../images/users/<%=response[i].profileImage%>" width="48" height="48" alt="User">
+                                                        <% } %>
+                                                     </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="switch">
+                                                        <label><input class="changestatus"  id="<%=response[i].id%>" table="users" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
+                                                            <span class="lever"></span></label>
+                                                    </div>
+                                                 </td>
+                                                <td class="text-center">
+                                                    <ul class="header-dropdown">
+                                                        <li class="dropdown">
+                                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                                                <i class="material-icons add">view_list</i>
+                                                            </a>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li><a href="javascript:void(0);" rel="<%=response[i].id%>" table="users" class="delete waves-effect waves-block"><i class="material-icons"> delete</i>Delete</a></li>
+                                                               <!--  <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons"> remove_red_eye</i>View</a></li> -->
+                                                                <li><a href="/admin/viewuser?id=<%=response[i].id%>"   class="edit waves-effect waves-block"><i class="material-icons"> mode_edit</i>View/Edit</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                         </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script type="text/javascript">
+   $('#c_password').on('keyup',function(){
+    if($('#c_password').val() == $('#n_password').val()){
+      $('#message').html('Confirmed Password Matching').css('color','green');
+      $('#updatebtn').removeAttr("disabled");
+    }else{
+      $('#message').html('Confirmed Password Not  Matching').css('color','red');
+      $('#updatebtn').attr("disabled","disabled");
+    }
+   });
+ $('#blah2').click(function(){
+ $('#profieimage').click();
+ });
+ $(".changestatus").change(function(){
+      var id= $(this).attr('id');
+      var table= $(this).attr('table');
+      var status=0;
+       if($(this).prop("checked") == true){
+           status=1;
+        }
+       else if($(this).prop("checked") == false){
+           status=0;
+       }
+       var ajaxurl = 'users_statuschange',
+          data = { id: id, table: table,status: status };
+          $.post(ajaxurl, data, function (response) {
+          if(response>0)
+          {
+
+          }
+       });
+        
+        
+ });
+$('.delete').click(function () {
+     let _this = $(this);
+    let id = $(this).attr("rel");
+     let table = $(this).attr("table");
+     swal({
+       title: "Are you sure?",
+       text: "Once deleted, you will not be able to recover this data!",
+       icon: "warning",
+       buttons: true,
+       dangerMode: true,
+     })
+       .then((data) => {
+         if (data) {
+           $.ajax({
+             url: "delete_user",
+             type: "post",
+             data: { id: id, table: table },
+             cache: false,
+             success: function (response) {
+                 swal("Proof! Your data has been deleted!", {
+                 icon: "success",
+               });
+               location.reload();
+                 _this.parents('tr').remove();
+             }, error(error) {
+               console.error(error);
+             }
+
+           });
+         }
+       });
+   });
+   
+</script>

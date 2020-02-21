@@ -1,0 +1,181 @@
+<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+<style>
+    .add{
+        color:#de7022 !important;
+    }
+    </style>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Add Category</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  id="category" enctype='multipart/form-data' method="post" action="addcategory">
+                                    <input type="hidden" name="id" id="idd" >
+                                    <div class="form-group">
+                                       
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" id="catname" name="catname" class="form-control" placeholder="Category Name" required>
+                                        </div>
+                                    </div>
+                                 
+                                     <div class="form-group">
+                                            <input type="submit" id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Save">
+                                    </div>
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Categories list</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Name</th>
+                                                <th class="text-center">Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                            <% for(let i in response) { %>
+                                             <tr>
+                                                <td><%=parseInt(i)+1%></td>
+                                                <td><%=response[i].name%></td>
+                                                <td class="text-center">
+                                                    <div class="switch">
+                                                        <label><input class="changestatus"  id="<%=response[i].id%>" table="category" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
+                                                            <span class="lever"></span></label>
+                                                    </div>
+                                                 </td>
+                                                <td class="text-center">
+                                                    <ul class="header-dropdown">
+                                                        <li class="dropdown">
+                                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                                                <i class="material-icons add">view_list</i>
+                                                            </a>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li><a href="javascript:void(0);" rel="<%=response[i].id%>" table="category" class="delete waves-effect waves-block"><i class="material-icons"> delete</i>Delete</a></li>
+                                                               <!--  <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons"> remove_red_eye</i>View</a></li> -->
+                                                                <li><a href="javascript:void(0);" id="<%=response[i].id%>" catename="<%=response[i].name%>" cateimage="<%=response[i].image%>" class="edit waves-effect waves-block"><i class="material-icons"> mode_edit</i>View/Edit</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                         </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script type="text/javascript">
+  
+ $(".changestatus").change(function(){
+      var id= $(this).attr('id');
+      var table= $(this).attr('table');
+      var status=0;
+       if($(this).prop("checked") == true){
+           status=1;
+        }
+       else if($(this).prop("checked") == false){
+           status=0;
+       }
+       var ajaxurl = 'cat_statuschange',
+          data = { id: id, table: table,status: status };
+          $.post(ajaxurl, data, function (response) {
+          if(response>0)
+          {
+
+          }
+       });
+        
+        
+ });
+$('.delete').click(function () {
+     let _this = $(this);
+    let id = $(this).attr("rel");
+     let table = $(this).attr("table");
+       swal({
+       title: "Are you sure?",
+       text: "Once deleted, you will not be able to recover this data!",
+       icon: "warning",
+       buttons: true,
+       dangerMode: true,
+     })
+       .then((data) => {
+         if (data) {
+           $.ajax({
+             url: "delete_cate",
+             type: "post",
+             data: { id: id, table: table },
+             cache: false,
+             success: function (response) {
+                 swal("Proof! Your data has been deleted!", {
+                 icon: "success",
+               });
+               location.reload();
+                 _this.parents('tr').remove();
+             }, error(error) {
+               console.error(error);
+             }
+
+           });
+         }
+       });
+   });
+$('.edit').click(function () { 
+   var id=$(this).attr('id');
+   var name=$(this).attr('catename');
+   $('#idd').val(id);
+   $('#catname').val(name);
+   $('#savebtn').val('Update');
+   $('#blah2').attr("src","../images/category/"+image);
+});
+$.validator.addMethod("cat", function (value, element) {
+    return this.optional(element) || /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i.test(value);
+  }, 'Please check the format');
+
+$("#category").validate({
+    rules: {
+        catname: {
+        required: true,
+        maxlength:25,
+        cat:true,
+      }
+    },
+    messages: {
+        catname: {
+        required: "Name field is required.",
+        maxlength: "Please enter only 25 characters"
+      },
+    }
+
+  });
+</script>
