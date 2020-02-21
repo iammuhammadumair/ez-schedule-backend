@@ -1,0 +1,72 @@
+<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+<style>
+.image2 {
+  float: left;
+  width: 50%;
+}
+</style>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2> All Post Details</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  enctype='multipart/form-data'>
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label for="" class="col-sm-5 control-label">User Name</label>
+                                        <div class="form-line">
+                                            <input type="text" id="username" value="<%=response[0].post.user.username%>" name="name" class="form-control" placeholder="" disabled>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                      <label for="" class="col-sm-5  control-label">Description</label>
+                                        <div class="form-line">
+                                            <input type="text" name="country" value="<%=response[0].post.description %>"class="form-control" placeholder="" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                    <div class="row clearfix">
+                                      <div class="col-sm-12">
+                                        <label>Image</label>
+                                     
+                                       
+                                      
+                                    </div>
+                                        <div class="form-group">
+                                          <%for(let i in response){%>
+                                            <div class="image2">
+                                                     <img id="blah2" src="../images/<%=response[i].images%>"  alt="User"/> 
+                                                   
+                                             </div>
+                                             <%}%>
+                                       </div>
+                                      
+                                  </div>
+                                       
+                                
+                                   
+                                  </div>
+                                                           
+                                     
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>

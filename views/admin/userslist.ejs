@@ -92,15 +92,6 @@
     </section>
 <% include  layout/footer.ejs %>
 <script type="text/javascript">
-   $('#c_password').on('keyup',function(){
-    if($('#c_password').val() == $('#n_password').val()){
-      $('#message').html('Confirmed Password Matching').css('color','green');
-      $('#updatebtn').removeAttr("disabled");
-    }else{
-      $('#message').html('Confirmed Password Not  Matching').css('color','red');
-      $('#updatebtn').attr("disabled","disabled");
-    }
-   });
  $('#blah2').click(function(){
  $('#profieimage').click();
  });
@@ -147,8 +138,8 @@ $('.delete').click(function () {
                  swal("Proof! Your data has been deleted!", {
                  icon: "success",
                });
+               
                location.reload();
-                 _this.parents('tr').remove();
              }, error(error) {
                console.error(error);
              }

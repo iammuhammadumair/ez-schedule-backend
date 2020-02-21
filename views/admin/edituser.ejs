@@ -112,7 +112,7 @@ $('#blah2').click(function(){
  });
 
  $.validator.addMethod("lettersonly", function (value, element) {
-    return this.optional(element) || /^[^-\s][a-zA-Z0-9_\s-]+$/i.test(value);
+    return this.optional(element) || /^[^-\s][a-zA-Z ]+$/i.test(value);
   }, 'Please check the format');
   jQuery.validator.addMethod("Email", function(value, element) {
   return this.optional( element ) || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( value );

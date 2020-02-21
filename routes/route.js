@@ -3,6 +3,7 @@
  const terms = require('../controller/terms_controller');
  const category = require('../controller/category_controller');
  const faq = require('../controller/faq_controller');
+ const post = require('../controller/posts_controller');
 
 
 module.exports = function (app) {
@@ -55,6 +56,14 @@ module.exports = function (app) {
      app.route('/admin/createdata').post(faq.createdata);
      app.route('/admin/view_data').get(faq.viewdata);
      app.route('/admin/update_data').post(faq.update_data);
+
+      /*-----------------------Posts---------------------------*/
+
+      app.route('/admin/posts').get(post.postslist);
+      app.route('/admin/post_statuschange').post(post.post_statuschange);
+      app.route('/admin/deletepost').post(post.delete_post);
+      app.route('/admin/viewposts').get(post.viewposts);
+
 }
 
 

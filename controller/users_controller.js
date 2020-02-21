@@ -152,7 +152,16 @@ module.exports = {
               });
              image_name = fileimage;
           }
-
+          const count = await users.count({
+            where : {
+              email : req.body.email
+            }
+      });
+     if(count > 0) {
+       req.flash('msg', 'Email already Exist');
+       res.redirect('/admin/update_user');
+       return;
+     }
       const update_users= await users.update({
               username: req.body.name, 
               profileImage: image_name, 

@@ -30,6 +30,16 @@ module.exports = {
   addcategory: async function (req, res) {
     if (req.session && req.session.auth == true) {
     if(req.body.id=="") {
+      const count = await category.count({
+        where : {
+          name : req.body.catname
+        }
+  });
+ if(count > 0) {
+   req.flash('msg', 'Category already Exist');
+   res.redirect('/admin/categories');
+   return;
+ }
       const addcategory= await category.create({
               name: req.body.catname, 
          });

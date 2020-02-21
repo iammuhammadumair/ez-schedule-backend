@@ -23,6 +23,7 @@
                                                 <th>S.No</th>
                                                 <th>Users Name</th>
                                                 <th>Description</th>
+                                                <th>Vote Count</th>
                                                 <th class="text-center">Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -32,8 +33,11 @@
                                            
                                              <tr>
                                                 <td><%=parseInt(i)+1%></td>
-                                                <td><%=response[i].username%></td>
+                                                <td><%=response[i].user.username%></td>
                                                 <td><%=response[i].description%></td>
+                                           
+                                                <td><%=response[i].userName%></td>
+                                            
                                                 <!--<td class="text-center">
                                                     <div class="image">
                                                         <% if(response[i].profileImage=="") { %>                                                       
@@ -57,8 +61,8 @@
                                                             </a>
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li><a href="javascript:void(0);" rel="<%=response[i].id%>" table="users" class="delete waves-effect waves-block"><i class="material-icons"> delete</i>Delete</a></li>
-                                                               <!--  <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons"> remove_red_eye</i>View</a></li> -->
-                                                                <li><a href="/admin/viewuser?id=<%=response[i].id%>"   class="edit waves-effect waves-block"><i class="material-icons"> mode_edit</i>View/Edit</a></li>
+                                                              <li><a href="/admin/viewposts?id=<%=response[i].id%>" class=" waves-effect waves-block"><i class="material-icons"> remove_red_eye</i>View</a></li>
+                                                               <!-- <li><a href="/admin/viewuser?id=<%=response[i].id%>"   class="edit waves-effect waves-block"><i class="material-icons"> mode_edit</i>View/Edit</a></li>-->
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -118,7 +122,7 @@ $('.delete').click(function () {
        .then((data) => {
          if (data) {
            $.ajax({
-             url: "delete_user",
+             url: "delete_post",
              type: "post",
              data: { id: id, table: table },
              cache: false,

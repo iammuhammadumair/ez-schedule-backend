@@ -3,13 +3,18 @@ const db = require('../models');
 var crypto = require('crypto')
 const admin = db.admin;
 const users = db.users;
-const blogs=db.blogs;
+const posts = db.posts;
+const faq = db.faq
+const vote = db.votecasting;
 const category = db.category
-const Donation=db.donation;
 const database = require('../db/db');
 const sequelize = require('sequelize');
-
-
+posts.belongsTo(users, {
+  foreignKey: 'userId'
+});
+posts.belongsTo(category, {
+  foreignKey: 'catId'
+});
 
 module.exports = {
   
@@ -66,15 +71,23 @@ module.exports = {
   dashboard: async function (req, res) {
 
     if (req.session && req.session.auth == true) {
-    var cat =  await category.findAll({
+        var postdetail =await posts.findAll({
+          attributes:['id','userId','catId','description','createdAt',[sequelize.literal('(SELECT count(postId) FROM votecasting WHERE posts.id = votecasting.postId)'), 'userName']
+          ],
+         include : [{
+           required:true,
+           model : users,
+           attributes : ['username']
+      }],
       order: [
-        ['id', 'DESC'],
-    ], 
-        limit:5   
-       });
-       cat = cat.map(value => {
-        return value.toJSON();
-    });
+       ['id', 'desc'],
+     ],
+     limit:5
+   });
+   postdetail = postdetail.map(value => 
+          {
+              return value.toJSON();
+          });
 
     var user_data =  await users.findAll({
           order: [
@@ -88,15 +101,17 @@ module.exports = {
     
     const user_count = await users.count({});
     const category_count = await category.count({});
-
+    const post=await posts.count({});
+    const faq_count=await faq.count({});
     /*console.log(total_amount,"total_amount");return;*/
 
      let countdata={
-      catdata:cat,
         user_count:user_count,
-        //donation:Donation_count,
+        post:post,
+        postdetail:postdetail,
         newusers:user_data, 
         category:category_count ,
+        faq:faq_count
      }
      /*console.log(countdata,"countdata");return;*/
      res.render('admin/dashboard', {sessiondata: req.session,countdata: countdata, msg: req.flash('msg'),  title: 'dashboard'});

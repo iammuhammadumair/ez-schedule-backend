@@ -64,7 +64,17 @@ module.exports={
         }
       },
       createdata: async function (req, res) {
-        if (req.session && req.session.auth == true) {             
+        if (req.session && req.session.auth == true) { 
+          const count = await faq.count({
+            where : {
+              questions : req.body.ques
+            }
+      });
+     if(count > 0) {
+       req.flash('msg', 'FAQ already Exist');
+       res.redirect('/admin/data');
+       return;
+     }            
             const add= await faq.create({
                 questions:req.body.ques,
                 answers:req.body.ans
