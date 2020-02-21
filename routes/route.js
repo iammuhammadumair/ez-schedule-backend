@@ -24,10 +24,7 @@ module.exports = function (app) {
     app.route('/admin/delete_cate').post(category.delete_cate);
     app.route('/admin/cat_statuschange').post(category.cat_statuschange);
   
-     /*---------------------leaderboard--------------------*/
-     app.route('/admin/leaderboard').get(users.leaderboard_content);
-
-       
+           
    /*-------------------------users-----------------------*/
     app.route('/admin/adduser').get(users.adduser);
     app.route('/admin/createuser').post(users.createuser);

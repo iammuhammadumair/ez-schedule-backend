@@ -177,21 +177,4 @@ module.exports = {
     }
 
   },
-  leaderboard_content:async function(req,res){
-      if (req.session && req.session.auth == true) {
-       var data =  await users.findAll({
-       attributes: ['country',[sequelize.fn('sum', sequelize.col('steps')),'Totalsteps']],
-        group: ['users.country'], 
-        });
-        data = data.map(value => 
-         {
-             return value.toJSON();
-         });
-        // console.log(data,'data======'); return false
-        res.render('admin/leaderboard', { sessiondata: req.session,response:data, msg: req.flash('msg'),  title: 'Leaderboard'});
-     } else {
-       req.flash('msg', 'Please login first');
-       res.redirect('/admin')
-     }
-  },
 }
