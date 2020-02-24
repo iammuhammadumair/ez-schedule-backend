@@ -45,7 +45,16 @@ module.exports = {
          });
       req.flash('msg', 'Category Successfully Added');
       } else {
-        
+        const count = await category.count({
+          where : {
+            name : req.body.catname
+          }
+    });
+   if(count > 0) {
+     req.flash('msg', 'Category already Exist');
+     res.redirect('/admin/categories');
+     return;
+   }
           let update = await category.update({
                     name:req.body.catname,
                 },

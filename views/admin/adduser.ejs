@@ -66,8 +66,8 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
-                                                <div class="form-line" id='datetimepicker1'>
-                                                    <input type="date" name="dob" class="form-control"  placeholder=""  >
+                                                <div class="form-line" id='datepicker'>
+                                                    <input type="date" max="2020-02-24" name="dob" class="form-control"  placeholder=""  >
                                 
                                                
                                                 </div>
@@ -110,9 +110,10 @@
 $('#blah2').click(function(){
  $('#profieimage').click();
  });
- $(function () {
-  $('#datetimepicker1').datetimepicker();
-   });
+ $(function() {
+
+
+});
 
  $.validator.addMethod("lettersonly", function (value, element) {
     return this.optional(element) || /^[^-\s][a-zA-Z ]+$/i.test(value);
