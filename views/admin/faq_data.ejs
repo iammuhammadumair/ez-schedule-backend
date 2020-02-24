@@ -116,8 +116,9 @@ $('.delete').click(function () {
                  swal("Proof! Your data has been deleted!", {
                  icon: "success",
                });
-               location.reload()
-                 _this.parents('tr').remove();
+               setTimeout(() => {
+                window.location.reload();
+                },3000);
              }, error(error) {
                console.error(error);
              }
