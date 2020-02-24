@@ -36,7 +36,7 @@
                                                 <td><%=response[i].user.username%></td>
                                                 <td><%=response[i].description%></td>
                                            
-                                                <td><%=response[i].userName%></td>
+                                                <td><%=response[i].Totalvotes%></td>
                                             
                                                 <!--<td class="text-center">
                                                     <div class="image">
@@ -49,7 +49,7 @@
                                                 </td>-->
                                                 <td class="text-center">
                                                     <div class="switch">
-                                                        <label><input class="changestatus"  id="<%=response[i].id%>" table="users" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
+                                                        <label><input class="changestatus"  id="<%=response[i].id%>" table="posts" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
                                                             <span class="lever"></span></label>
                                                     </div>
                                                  </td>
@@ -122,7 +122,7 @@ $('.delete').click(function () {
        .then((data) => {
          if (data) {
            $.ajax({
-             url: "delete_post",
+             url: "deletepost",
              type: "post",
              data: { id: id, table: table },
              cache: false,

@@ -1,9 +1,28 @@
 <% include  layout/header.ejs %>
 <% include  layout/navbar.ejs %>
+
 <style>
 .image2 {
-  float: left;
-  width: 50%;
+    float: left;
+    width: 25%;
+    box-shadow: 0px 0px 4px #ddd;
+    padding: 15px;
+}
+.form-group.post_diff {
+    padding: 10px 20px;
+}
+.image2 {
+    float: left;
+    width: 25%;
+    box-shadow: 0px 0px 4px #ddd;
+    padding: 15px;
+}
+.image2 h3 {
+    font-size: 19px;
+    letter-spacing: 1px;
+    margin: 10px 0px;
+    float: left;
+    width: 100%;
 }
 </style>
     <section class="content">
@@ -42,10 +61,14 @@
                                        
                                       
                                     </div>
-                                        <div class="form-group">
+                                        <div class="form-group post_diff">
                                           <%for(let i in response){%>
+                                            <% 
+                                                let likes=Math.round((response[i].Totalimages/response[0].Votes)*100)
+                                            %>
                                             <div class="image2">
                                                      <img id="blah2" src="../images/<%=response[i].images%>"  alt="User"/> 
+                                                     <h3><%=likes%>%</h3>
                                                    
                                              </div>
                                              <%}%>

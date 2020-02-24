@@ -67,7 +67,7 @@
                                             <div class="form-group">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
                                                 <div class="form-line" id='datetimepicker1'>
-                                                    <input type="date" name="dob" class="form-control"  placeholder=""  required >
+                                                    <input type="date" name="dob" class="form-control"  placeholder=""  >
                                 
                                                
                                                 </div>
@@ -141,9 +141,15 @@ $('#blah2').click(function(){
           required:true,
           country:true
       },
+      gender:{
+          required:true,
+      },
       password:{
         required:true,
         minlength:6,
+      },
+      dob:{
+        required:true,
       }
     },
     messages: {
@@ -157,9 +163,15 @@ $('#blah2').click(function(){
       country: {
         required: "Country field is required."
       },
+      gender:{
+        required: "Gender field is required"
+      },
       password:{
         required: "Password field is required.",
         minlength: "Password atleast 6 character long."
+      },
+      dob:{
+        required: "Date of Birth field is required"
       }
     }
 

@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		status: {
 			type: DataTypes.INTEGER(4),
-			allowNull: false,
+			allowNull: true,
 			defaultValue: '1',
 			field: 'status'
 		},

@@ -2,10 +2,10 @@ const db = require('../models');
 const Helper = require('../config/helper');
 var crypto = require('crypto')
 const users = db.users
+const posts = db.posts;
 const sequelize = require('sequelize');
 var path = require('path');
 var uuid = require('uuid');
-
 
 module.exports = {
   adduser: async function (req, res) {
@@ -74,15 +74,21 @@ module.exports = {
   userslist : async function (req, res) {
      if (req.session && req.session.auth == true) {
       var users_data =  await users.findAll({
+          attributes:['id','username','profileImage','email','status','country','gender',[sequelize.literal('(SELECT count(userId) FROM posts WHERE users.id = posts.userId)'), 'totalposts']],  
           order: [
             ['id', 'DESC'],
-        ],     
+        ],  
        });
+     // console.log(users_data); return false
        users_data = users_data.map(value => 
         {
             return value.toJSON();
         });
-       res.render('admin/userslist', { sessiondata: req.session,response:users_data, msg: req.flash('msg'),  title: 'User'});
+        var data =  await users.findAll({
+          attributes:['country']
+       });
+       //console.log(data); return false
+       res.render('admin/userslist', { sessiondata: req.session,response:users_data,data, msg: req.flash('msg'),  title: 'User'});
     } else {
       req.flash('msg', 'Please login first');
       res.redirect('/admin')

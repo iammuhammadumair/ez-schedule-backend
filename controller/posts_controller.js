@@ -24,12 +24,12 @@ module.exports={
     postslist : async function (req, res) {
         if (req.session && req.session.auth == true) {
          var post =  await posts.findAll({
-           attributes:['id','userId','catId','description',[sequelize.literal('(SELECT count(postId) FROM votecasting WHERE posts.id = votecasting.postId)'), 'userName']
+           attributes:['id','userId','catId','description','status',[sequelize.literal('(SELECT count(postId) FROM votecasting WHERE posts.id = votecasting.postId)'), 'Totalvotes']
            ],
           include : [{
             required:true,
             model : users,
-            attributes : ['username']
+            attributes : ['username'],
        }],
        order: [
         ['id', 'desc'],
@@ -48,6 +48,7 @@ module.exports={
      },
     post_statuschange: async function (req, res) {
       if (req.session && req.session.auth == true) {
+        
         let update = await posts.update({
                   status:req.body.status
               },
@@ -56,6 +57,7 @@ module.exports={
                     id: req.body.id,
               }
         });
+        console.log(update); return false
         res.json(1);
        } else {
         req.flash('msg', 'Please login first');
@@ -76,26 +78,23 @@ module.exports={
       }
     }, 
     viewposts: async function (req, res) {
-      
       if (req.session && req.session.auth == true) {
       let postsd= await postsImages.findAll({
-        attributes:['id','images','postId'],
+        attributes:['id','images','postId',[sequelize.literal('(SELECT count(imageId) FROM votecasting WHERE postsImages.id = votecasting.imageId)'), 'Totalimages'],[sequelize.literal('(SELECT count(id) FROM votecasting WHERE postsImages.postId = votecasting.postId)'), 'Votes']],
         include:[{
           model:posts,
           attributes:['id','userId','catId','description','catId'],
           include:[{
               model:users,
+              required:true,
               attributes:['id','username'],
-             
           }]
-         
         },
-        
       ],
       where:{
         postId:req.query.id
       }
-      });
+      });   
      
       getposts = postsd.map(value => 
         {

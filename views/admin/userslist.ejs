@@ -1,9 +1,16 @@
 ﻿<% include  layout/header.ejs %>
 <% include  layout/navbar.ejs %>
+
+
 <style>
     .add{
         color:#de7022 !important;
     }
+.top {
+    margin-bottom: 29px;
+    float: left;
+    width: 100%;
+}
     </style>
     <section class="content">
         <div class="container-fluid">
@@ -13,16 +20,46 @@
                         <div class="header">
                             <h2>Users list</h2>
                         </div>
+                        <div class="top">
+                        <div class="col-xs-4">
+                            <br>
+                                <h2 class="card-inside-title">Gender Filter</h2>
+                                <div class="form-line">
+                      
+                                        <select id="dropdown1" class="form-control show-tick" name="status" >
+                                            <option value="">All</option>
+                                           <option value="Male.">Male</option>
+                                           <option value="Female">Female</option>
+                                        </select>
+                                       
+                                    </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <br>
+                                    <h2 class="card-inside-title">Country Filter</h2>
+                                    <div class="form-line">
+                          
+                                            <select id="dropdown2" class="form-control show-tick" name="status" >
+                                                <option value="">All</option>
+                                                <% for(let j in data) { %>
+                                                <option><%=data[j].country%></option>
+                                                <% } %>
+                                            </select>
+                                           
+                                        </div>
+                                </div>
+                         </div>
                         <div class="body">
-                            <div class="row clearfix">
+                            <div class="row clearfix" >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <table class="table" id="usertable" >
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Users Name</th>
                                                 <th>Email</th>
+                                                <th>Posts</th>
                                                 <th>Country</th>
                                                 <th>Gender</th>
                                                 <th class="text-center" >Image</th>
@@ -37,9 +74,9 @@
                                                 <td><%=parseInt(i)+1%></td>
                                                 <td><%=response[i].username%></td>
                                                 <td><%=response[i].email%></td>
+                                                <td><%=response[i].totalposts%></td>
                                                 <td><%=response[i].country%></td>
-                                                <td><% if( response[i].gender==1){ %> Male
-                                                    <% }
+                                                <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
                                                       else{
                                                      %>
                                                     Female
@@ -91,6 +128,18 @@
         </div>
     </section>
 <% include  layout/footer.ejs %>
+<script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+<script src="../../plugins/momentjs/moment.js"></script>
+<script src="../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
  $('#blah2').click(function(){
  $('#profieimage').click();
@@ -148,5 +197,11 @@ $('.delete').click(function () {
          }
        });
    });
-   
+   var table = $('#usertable').DataTable();
+   $('#dropdown1').on('change', function () {
+         table.columns(5).search( this.value ).draw();
+         });
+    $('#dropdown2').on('change', function () {
+        table.columns(4).search( this.value ).draw();
+         });
 </script>

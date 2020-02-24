@@ -1,8 +1,4 @@
 <style>
-    .appearence {
-        color:#000 !important;
-        font-weight: bold !important;
-    }
     </style>
     <section>
         <!-- Left Sidebar -->
@@ -17,9 +13,9 @@
                     <% } %>
                 </div>
                 <div class="info-container">
-                    <div class="name appearence" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=sessiondata.user.name %></div>
-                    <div class="email appearence"><%=sessiondata.user.email %></div>
-                    <div class="btn-group user-helper-dropdown appearence">
+                    <div class="name " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><%=sessiondata.user.name %></div>
+                    <div class="email"><%=sessiondata.user.email %></div>
+                    <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
                             <li><a href="/admin/profile"><i class="material-icons">person</i>Profile</a></li>
@@ -40,7 +36,7 @@
                             <span>Home</span>
                         </a>
                     </li>
-                    <li class="<%=(title == 'Leaderboard' )? 'active' : '' %>">
+                    <li class="<%=(title == 'Categories' )? 'active' : '' %>">
                         <a href="../admin/categories">
                            
                             <i class="material-icons">widgets</i>
