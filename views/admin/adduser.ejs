@@ -93,9 +93,9 @@
                                           <label for="" class="col-sm-5 control-label">Gender</label>
                                           <div class="col-sm-10">
                                               <div class="">
-                                                <input type="radio" id="male" name="gender" value="1">
-                                                <label class="label-text" for="male">Male</label>
-                                                <input type="radio" id="female" name="gender" value="2">
+                                                <input type="radio" id="male" checked name="gender" value="1">
+                                                <label class="label-text"  for="male">Male</label>
+                                                <input type="radio" id="female"  name="gender" value="2">
                                                 <label class="label-text" for="female">Female</label>
                                               </div> 
                                           </div>
@@ -129,7 +129,7 @@ $('#blah2').click(function(){
 
  $.validator.addMethod("lettersonly", function (value, element) {
     return this.optional(element) || /^[^-\s][a-zA-Z ]+$/i.test(value);
-  }, 'Please check the format');
+  }, 'Please enter valid name');
   jQuery.validator.addMethod("Email", function(value, element) {
   return this.optional( element ) || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( value );
 }, 'Please enter a valid email address.');
