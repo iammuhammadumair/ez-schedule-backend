@@ -56,18 +56,35 @@
                                       <div class="form-group">
                                         <label for="" class="col-sm-5 control-label">Password</label>
                                           <div class="form-line">
-                                              <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                              <input type="password" name="password" class="form-control" placeholder="" required>
                                           </div>
                                       </div>
                                   </div>
                                     </div>
-                                    
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label  class="col-sm-5  control-label">City</label>
+                                            <div class="form-line">
+                                                <input type="text" name="city" class="form-control" placeholder="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                      <div class="form-group">
+                                        <label for="" class="col-sm-5 control-label">Age</label>
+                                          <div class="form-line">
+                                              <input type="text" name="age" class="form-control" placeholder="" required>
+                                          </div>
+                                      </div>
+                                  </div>
+                                    </div>
                                     <div class="row clearfix"  >  
                                         <div class="col-sm-6" >
                                             <div class="form-group ">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
                                                 <div class="form-line" >
-                                                    <input type="date" name="dob" max="2020-02-25"  class="form-control " >
+                                                    <input type="date" name="dob" id="txtDate"  class="form-control " >
                                                 </div>
                                             </div>
                                         </div>
@@ -141,6 +158,12 @@ $('#blah2').click(function(){
         required:true,
         minlength:6,
       },
+      city:{
+        required:true,
+      },
+      age:{
+        required:true,
+      },
       dob:{
         required:true,
       }
@@ -162,32 +185,29 @@ $('#blah2').click(function(){
       },
       dob:{
         required: "Date of Birth field is required"
+      },
+      city:{
+        required:"City field is required."
+      },
+      age:{
+        required: "Age field is required"
       }
     }
 
   });
 
+  var dateControler = {
+        		    currentDate : null
+        		}
 
-  $(function() {
-
-	  $(document).ready(function () {
-
-	     
- var todaysDate = new Date(); // Gets today's date
-	    // Max date attribute is in "YYYY-MM-DD".  Need to format today's date accordingly
-	    var year = todaysDate.getFullYear();                        // YYYY
-
-	    var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);  // MM
-
-	    var day = ("0" + todaysDate.getDate()).slice(-2);           // DD
-	    var maxDate = (year +"-"+ month +"-"+ day); // Results in "YYYY-MM-DD" for today's date 
-	    // Now to set the max date value for the calendar to be today's date
-
-	    $('.inspectionDate input').attr('max',maxDate);
-
-	  
-
-	  });
-
-	});
+        		 $(document).on( "change", "#txtDate",function( event, ui ) {
+        		        var now = new Date();
+        		        var selectedDate = new Date($(this).val());
+        		        
+        		        if(selectedDate > now) {
+        		            $(this).val(dateControler.currentDate)
+        		        } else {
+        		            dateControler.currentDate = $(this).val();
+        		        }
+        		    });
 </script>

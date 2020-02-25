@@ -5,6 +5,7 @@ const app = express();
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 
+
 //console.log(swaggerUi,"=============swaggerUi");
 const fs = require('fs');
 const Sequelize = require('sequelize');

@@ -60,12 +60,12 @@
                                     <br>
                                         <h2 class="card-inside-title">City Filter</h2>
                                         <div class="form-line">
-                              
+                                            
                                                 <select id="dropdown3" class="form-control show-tick" name="status" >
                                                     <option value="">All</option>
-                                                    <% for(let g in response) { %>
-                                                    <option> <%=response[g].city %></option>
-                                                    <%}%>
+                                                    <% for(let j in data1) { %>
+                                                        <option><%=data1[j].city%></option>
+                                                        <% } %>
                                                 </select>
                                                
                                             </div>

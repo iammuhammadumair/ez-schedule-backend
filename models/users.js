@@ -23,6 +23,7 @@ module.exports = function(sequelize, DataTypes) {
 		phone: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
+			defaultValue: '',
 			field: 'phone'
 		},
 		email: {
@@ -59,6 +60,7 @@ module.exports = function(sequelize, DataTypes) {
 		state: {
 			type: DataTypes.STRING(50),
 			allowNull: true,
+			defaultValue: '',
 			field: 'state'
 		},
 		city: {
@@ -92,16 +94,18 @@ module.exports = function(sequelize, DataTypes) {
 		authKey: {
 			type: DataTypes.STRING(200),
 			allowNull: true,
+			defaultValue: '',
 			field: 'auth_key'
 		},
 		deviceType: {
 			type: DataTypes.INTEGER(11),
-			allowNull: false,
+			allowNull: true,
 			field: 'device_type'
 		},
 		deviceToken: {
 			type: DataTypes.STRING(255),
 			allowNull: true,
+			defaultValue: '',
 			field: 'device_token'
 		},
 		createdAt: {

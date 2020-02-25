@@ -52,6 +52,8 @@ module.exports = {
               country:req.body.country, 
               dob:req.body.dob, 
               gender:req.body.gender, 
+              city:req.body.city,
+              age:req.body.age,
               //countryCode:req.body.country_code,
               lat: req.body.lat, 
               lng: req.body.lng,
@@ -89,10 +91,17 @@ module.exports = {
             return value.toJSON();
         });
         var data =  await users.findAll({
-          attributes:['country']
+          attributes:['country'],
+           group: ['country']
+
        });
+       var data1 =  await users.findAll({
+        attributes:['city'],
+         group: ['city']
+
+     });
        //console.log(data); return false
-       res.render('admin/userslist', { sessiondata: req.session,response:users_data,data, msg: req.flash('msg'),  title: 'User'});
+       res.render('admin/userslist', { sessiondata: req.session,response:users_data,data,data1, msg: req.flash('msg'),  title: 'User'});
     } else {
       req.flash('msg', 'Please login first');
       res.redirect('/admin')
@@ -148,6 +157,7 @@ module.exports = {
     }
   },
    update_user: async function (req, res) {
+   
     if (req.session && req.session.auth == true) {
          image_name=req.body.hiddenimage;
          id=req.body.id;
@@ -164,12 +174,15 @@ module.exports = {
           }
           const count = await users.count({
             where : {
-              email : req.body.email
+              email : req.body.email,
+              id: {
+                $ne: req.body.id
+              }
             }
       });
      if(count > 0) {
        req.flash('msg', 'Email already Exist');
-       res.redirect('/admin/update_user');
+       res.redirect('/admin/userslist');
        return;
      }
       const update_users= await users.update({
@@ -179,6 +192,8 @@ module.exports = {
               country:req.body.country, 
               dob:req.body.dob, 
               gender:req.body.gender,
+              city:req.body.city,
+              age:req.body.age,
               lat: req.body.lat, 
               lng: req.body.lng
             },

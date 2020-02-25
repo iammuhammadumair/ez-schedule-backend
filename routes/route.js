@@ -33,7 +33,7 @@ module.exports = function (app) {
     app.route('/admin/users_statuschange').post(users.users_statuschange);
     app.route('/admin/delete_user').post(users.delete_user);
     app.route('/admin/viewuser').get(users.viewuser);
-    app.route('/admin/update_user').post(users.update_user);
+    app.route('/admin/updateuser').post(users.update_user);
 
     /*-----------------------terms---------------------------*/
 

@@ -12,7 +12,7 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-sm-12">
-                                <form  enctype='multipart/form-data' method="post" action="update_user" id="users">
+                                <form  enctype='multipart/form-data' method="post" action="updateuser" id="users">
                                   <input type="hidden" name="hiddenimage" value="<%=users_data.profileImage%>" >
                                   <input type="hidden" name="id" value="<%=users_data.id%>" >
 
@@ -60,13 +60,30 @@
                                         </div>
                                     </div>
                                     </div>
-                                    
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label  class="col-sm-5  control-label">City</label>
+                                            <div class="form-line">
+                                                <input type="text" value="<%=users_data.city%>" name="city" class="form-control" placeholder="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                      <div class="form-group">
+                                        <label for="" class="col-sm-5 control-label">Age</label>
+                                          <div class="form-line">
+                                              <input type="text" name="age" value="<%=users_data.age%>"class="form-control" placeholder="" required>
+                                          </div>
+                                      </div>
+                                  </div>
+                                    </div>
                                     <div class="row clearfix">  
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
                                                 <div class="form-line">
-                                                    <input type="date" name="dob" value="<%=users_data.dob%>"class="form-control" placeholder="" id="datetimepicker1" required >
+                                                    <input type="date" name="dob" value="<%=users_data.dob%>"class="form-control" id="txtDate" required >
                                                 </div>
                                             </div>
                                         </div>
@@ -136,6 +153,12 @@ $('#blah2').click(function(){
           required:true,
           country:true
       },
+      city:{
+        required:true,
+      },
+      age:{
+        required:true,
+      },
       
     },
     messages: {
@@ -149,7 +172,28 @@ $('#blah2').click(function(){
       country: {
         required: "Country field is required."
       },
+      city:{
+        required:"City field is required."
+      },
+      age:{
+        required: "Age field is required"
+      }
     }
 
   });
+
+  var dateControler = {
+        		    currentDate : null
+        		}
+
+        		 $(document).on( "change", "#txtDate",function( event, ui ) {
+        		        var now = new Date();
+        		        var selectedDate = new Date($(this).val());
+        		        
+        		        if(selectedDate > now) {
+        		            $(this).val(dateControler.currentDate)
+        		        } else {
+        		            dateControler.currentDate = $(this).val();
+        		        }
+        		    });
 </script>
