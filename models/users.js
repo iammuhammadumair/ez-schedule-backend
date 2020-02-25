@@ -16,19 +16,18 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		profileImage: {
 			type: DataTypes.STRING(255),
-			allowNull: true,
+			allowNull: false,
 			defaultValue: '',
 			field: 'profile_image'
 		},
 		phone: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
-			defaultValue: '',
 			field: 'phone'
 		},
 		email: {
 			type: DataTypes.STRING(200),
-			allowNull: false,
+			allowNull: true,
 			field: 'email'
 		},
 		password: {
@@ -39,15 +38,14 @@ module.exports = function(sequelize, DataTypes) {
 		forgotPassword: {
 			type: DataTypes.STRING(255),
 			allowNull: true,
+			defaultValue: '',
 			field: 'forgotPassword'
 		},
-		
 		country: {
 			type: DataTypes.STRING(50),
-			allowNull: false,
+			allowNull: true,
 			field: 'Country'
 		},
-		
 		dob: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
@@ -58,7 +56,21 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			field: 'gender'
 		},
-		
+		state: {
+			type: DataTypes.STRING(50),
+			allowNull: true,
+			field: 'state'
+		},
+		city: {
+			type: DataTypes.STRING(50),
+			allowNull: true,
+			field: 'city'
+		},
+		age: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'age'
+		},
 		notificationStatus: {
 			type: DataTypes.INTEGER(11),
 			allowNull: true,
@@ -84,7 +96,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		deviceType: {
 			type: DataTypes.INTEGER(11),
-			allowNull: true,
+			allowNull: false,
 			field: 'device_type'
 		},
 		deviceToken: {

@@ -9,10 +9,10 @@
                         <div class="header">
                             <h2>Add User</h2>
                         </div>
-                        <div class="body">
+                        <div class="body" >
                             <div class="row clearfix">
                                 <div class="col-sm-12">
-                                <form  enctype='multipart/form-data' method="post" action="createuser" id="users">
+                                <form  enctype='multipart/form-data' method="post" action="createuser" id="users"  >
                                     <div class="form-group">
                                        <label>User Profile Image</label>
                                          <div class="image2">
@@ -62,14 +62,12 @@
                                   </div>
                                     </div>
                                     
-                                    <div class="row clearfix">  
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
+                                    <div class="row clearfix"  >  
+                                        <div class="col-sm-6" >
+                                            <div class="form-group ">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
-                                                <div class="form-line" id='datepicker'>
-                                                    <input type="date" max="2020-02-24" name="dob" class="form-control"  placeholder=""  >
-                                
-                                               
+                                                <div class="form-line" >
+                                                    <input type="date" name="dob" max="2020-02-25"  class="form-control " >
                                                 </div>
                                             </div>
                                         </div>
@@ -106,14 +104,11 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script>
 
 <script type="text/javascript">
-
+ 
 $('#blah2').click(function(){
  $('#profieimage').click();
  });
- $(function() {
-
-
-});
+ 
 
  $.validator.addMethod("lettersonly", function (value, element) {
     return this.optional(element) || /^[^-\s][a-zA-Z ]+$/i.test(value);
@@ -142,9 +137,6 @@ $('#blah2').click(function(){
           required:true,
           country:true
       },
-      gender:{
-          required:true,
-      },
       password:{
         required:true,
         minlength:6,
@@ -164,9 +156,6 @@ $('#blah2').click(function(){
       country: {
         required: "Country field is required."
       },
-      gender:{
-        required: "Gender field is required"
-      },
       password:{
         required: "Password field is required.",
         minlength: "Password atleast 6 character long."
@@ -177,4 +166,28 @@ $('#blah2').click(function(){
     }
 
   });
+
+
+  $(function() {
+
+	  $(document).ready(function () {
+
+	     
+ var todaysDate = new Date(); // Gets today's date
+	    // Max date attribute is in "YYYY-MM-DD".  Need to format today's date accordingly
+	    var year = todaysDate.getFullYear();                        // YYYY
+
+	    var month = ("0" + (todaysDate.getMonth() + 1)).slice(-2);  // MM
+
+	    var day = ("0" + todaysDate.getDate()).slice(-2);           // DD
+	    var maxDate = (year +"-"+ month +"-"+ day); // Results in "YYYY-MM-DD" for today's date 
+	    // Now to set the max date value for the calendar to be today's date
+
+	    $('.inspectionDate input').attr('max',maxDate);
+
+	  
+
+	  });
+
+	});
 </script>

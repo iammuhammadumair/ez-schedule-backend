@@ -74,12 +74,16 @@ module.exports = {
   userslist : async function (req, res) {
      if (req.session && req.session.auth == true) {
       var users_data =  await users.findAll({
-          attributes:['id','username','profileImage','email','status','country','gender',[sequelize.literal('(SELECT count(userId) FROM posts WHERE users.id = posts.userId)'), 'totalposts']],  
+          attributes:['id','username','profileImage','email','status','country','gender','state','city','age',[sequelize.literal('(SELECT count(userId) FROM posts WHERE users.id = posts.userId)'), 'totalposts'],
+          [sequelize.literal('(SELECT count(receiverId) FROM connections WHERE users.id = connections.receiverId)'), 'connection'],
+          [sequelize.literal('(SELECT count(*) FROM `votecasting` WHERE postId in (SELECT id FROM `posts` WHERE `userId`=users.id))'), 'votereceiver'],
+          [sequelize.literal('(SELECT count(*) FROM `votecasting` WHERE userId =users.id)'), 'sendvote'],
+        ],  
           order: [
             ['id', 'DESC'],
         ],  
        });
-     // console.log(users_data); return false
+     //console.log(users_data); return false
        users_data = users_data.map(value => 
         {
             return value.toJSON();

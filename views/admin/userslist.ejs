@@ -3,6 +3,9 @@
 
 
 <style>
+    nav.navbar {
+    z-index: 99999;
+}
     .add{
         color:#de7022 !important;
     }
@@ -10,6 +13,11 @@
     margin-bottom: 29px;
     float: left;
     width: 100%;
+}
+.left_side{
+    float: left;
+    padding: 1px 7px;
+    width: 50%;
 }
     </style>
     <section class="content">
@@ -21,7 +29,7 @@
                             <h2>Users list</h2>
                         </div>
                         <div class="top">
-                        <div class="col-xs-4">
+                        <div class="col-xs-2">
                             <br>
                                 <h2 class="card-inside-title">Gender Filter</h2>
                                 <div class="form-line">
@@ -34,7 +42,7 @@
                                        
                                     </div>
                             </div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-2">
                                 <br>
                                     <h2 class="card-inside-title">Country Filter</h2>
                                     <div class="form-line">
@@ -48,6 +56,30 @@
                                            
                                         </div>
                                 </div>
+                                <div class="col-xs-2">
+                                    <br>
+                                        <h2 class="card-inside-title">City Filter</h2>
+                                        <div class="form-line">
+                              
+                                                <select id="dropdown3" class="form-control show-tick" name="status" >
+                                                    <option value="">All</option>
+                                                    <% for(let g in response) { %>
+                                                    <option> <%=response[g].city %></option>
+                                                    <%}%>
+                                                </select>
+                                               
+                                            </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <br>
+                                            <h2 class="card-inside-title">Age Filter</h2>
+                                            <div class="form-line left_side">
+                                               <input type="text" placeholder="MinAge" class="form-control"  id="min">
+                                            </div>
+                                            <div class="form-line left_side">
+                                                <input type="text" placeholder="MaxAge" class="form-control"  id="max"> 
+                                                </div>
+                                        </div>
                          </div>
                         <div class="body">
                             <div class="row clearfix" >
@@ -57,12 +89,16 @@
                                         <thead>
                                             <tr>
                                                 <th>S.No</th>
-                                                <th>Users Name</th>
-                                                <th>Email</th>
+                                                <th>Name</th>
                                                 <th>Posts</th>
                                                 <th>Country</th>
                                                 <th>Gender</th>
-                                                <th class="text-center" >Image</th>
+                                                <th>City</th>
+                                                <th>Age</th>
+                                                <th>Connections</th>
+                                                <th>Receive Votes</th>
+                                                <th>Send Votes</th>
+                                               
                                                 <th class="text-center">Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -73,7 +109,6 @@
                                              <tr>
                                                 <td><%=parseInt(i)+1%></td>
                                                 <td><%=response[i].username%></td>
-                                                <td><%=response[i].email%></td>
                                                 <td><%=response[i].totalposts%></td>
                                                 <td><%=response[i].country%></td>
                                                 <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
@@ -83,7 +118,13 @@
                                                     <% } %>
                               
                                                   </td>
-                                                <td class="text-center">
+                                                  <td><%=response[i].city%></td>
+                                                  <td><%=response[i].age%></td>
+                                                  <td><%=response[i].connection%></td>
+                                                  <td><%=response[i].votereceiver%></td>
+                                                  <td><%=response[i].sendvote%></td>
+                                                 
+                                                <!--<td class="text-center">
                                                     <div class="image">
                                                         <% if(response[i].profileImage=="") { %>                                                       
                                                             <img src="../images/img.jpg" width="48" height="48" alt="">
@@ -91,7 +132,7 @@
                                                             <img src="../images/users/<%=response[i].profileImage%>" width="48" height="48" alt="User">
                                                         <% } %>
                                                      </div>
-                                                </td>
+                                                </td>-->
                                                 <td class="text-center">
                                                     <div class="switch">
                                                         <label><input class="changestatus"  id="<%=response[i].id%>" table="users" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
@@ -140,6 +181,7 @@
 <script src="../../plugins/momentjs/moment.js"></script>
 <script src="../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
 <script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
 <script type="text/javascript">
  $('#blah2').click(function(){
  $('#profieimage').click();
@@ -201,9 +243,46 @@ $('.delete').click(function () {
    });
    var table = $('#usertable').DataTable();
    $('#dropdown1').on('change', function () {
-         table.columns(5).search( this.value ).draw();
+         table.columns(4).search( this.value ).draw();
          });
     $('#dropdown2').on('change', function () {
-        table.columns(4).search( this.value ).draw();
+        table.columns(3).search( this.value ).draw();
          });
+    $('#dropdown3').on('change', function () {
+        table.columns(5).search( this.value ).draw();
+         });
+
+         $('#dropdown4').on('keyup keypress change', function () {
+        table.columns(6).search( this.value ).draw();
+         });
+
+$.fn.dataTable.ext.search.push(
+function (settings, data, dataIndex) 
+{
+	   
+       min_val = $('#min').val();
+       max_val = $('#max').val();
+   	if(min_val && max_val)
+   	{
+            min_val_time =  min_val;
+            max_val_time =  max_val;
+
+			var startDate = data[6];
+            s_time = startDate;
+			if(s_time >= min_val_time && s_time <= max_val_time)
+			{
+				return true;
+			}
+			return false;
+   	}
+     return true;
+;
+    }
+    );
+
+$('#min, #max').keyup(function () {
+    table.draw();
+});
+ 
+
 </script>
