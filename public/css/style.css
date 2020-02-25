@@ -7582,9 +7582,7 @@ fieldset[disabled] .form-control {
   background-color: rgba(0, 0, 0, 0.5);
   display: none;
   z-index: 10; }
-  nav.navbar {
-    z-index: 99999;
-}
+
    
 .overlay-open .sidebar {
   margin-left: 0;
