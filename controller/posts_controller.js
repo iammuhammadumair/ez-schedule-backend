@@ -71,6 +71,11 @@ module.exports={
                   id: req.body.id
                 }
               });
+              const postdelete = await postsImages.destroy({
+                where: {
+                  postId: req.body.id
+                }
+              });
         res.json(1);
        } else {
         req.flash('msg', 'Please login first');

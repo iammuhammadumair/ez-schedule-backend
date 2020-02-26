@@ -88,15 +88,15 @@
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Name</th>
-                                                <th>Posts</th>
-                                                <th>Country</th>
                                                 <th>Gender</th>
-                                                <th>City</th>
                                                 <th>Age</th>
+                                                <th>City</th>
+                                                <th>Province</th>
+                                                <th>Country</th>
+                                                <th>Posts</th>
                                                 <th>Connections</th>
-                                                <th>Votes Received</th>
                                                 <th>Votes Sent</th>
-                                               
+                                                <th>Votes Received</th>
                                                 <th class="text-center">Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -107,30 +107,21 @@
                                              <tr>
                                                 <td><%=parseInt(i)+1%></td>
                                                 <td><%=response[i].username%></td>
-                                                <td><%=response[i].totalposts%></td>
-                                                <td><%=response[i].country%></td>
                                                 <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
-                                                      else{
-                                                     %>
-                                                    Female
-                                                    <% } %>
-                              
-                                                  </td>
-                                                  <td><%=response[i].city%></td>
-                                                  <td><%=response[i].age%></td>
-                                                  <td><%=response[i].connection%></td>
-                                                  <td><%=response[i].votereceiver%></td>
-                                                  <td><%=response[i].sendvote%></td>
-                                                 
-                                                <!--<td class="text-center">
-                                                    <div class="image">
-                                                        <% if(response[i].profileImage=="") { %>                                                       
-                                                            <img src="../images/img.jpg" width="48" height="48" alt="">
-                                                        <% } else { %>
-                                                            <img src="../images/users/<%=response[i].profileImage%>" width="48" height="48" alt="User">
-                                                        <% } %>
-                                                     </div>
-                                                </td>-->
+                                                    else{
+                                                   %>
+                                                  Female
+                                                  <% } %>
+                            
+                                                </td>
+                                                <td><%=response[i].age%></td>
+                                                <td><%=response[i].city%></td>
+                                                <td><%=response[i].state%></td>
+                                                <td><%=response[i].country%></td>
+                                                <td><%=response[i].totalposts%></td>
+                                                <td><%=response[i].connection%></td>
+                                                <td><%=response[i].sendvote%></td>
+                                                <td><%=response[i].votereceiver%></td>
                                                 <td class="text-center">
                                                     <div class="switch">
                                                         <label><input class="changestatus"  id="<%=response[i].id%>" table="users" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >

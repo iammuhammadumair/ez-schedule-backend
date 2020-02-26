@@ -54,7 +54,7 @@ module.exports = {
               gender:req.body.gender, 
               city:req.body.city,
               age:req.body.age,
-              //countryCode:req.body.country_code,
+              state:req.body.state,
               lat: req.body.lat, 
               lng: req.body.lng,
               auth_key:auth_create
@@ -194,6 +194,7 @@ module.exports = {
               gender:req.body.gender,
               city:req.body.city,
               age:req.body.age,
+              state:req.body.state,
               lat: req.body.lat, 
               lng: req.body.lng
             },
