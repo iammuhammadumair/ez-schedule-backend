@@ -232,18 +232,15 @@ $('.delete').click(function () {
    });
    var table = $('#usertable').DataTable();
    $('#dropdown1').on('change', function () {
-         table.columns(4).search( this.value ).draw();
+         table.columns(2).search( this.value ).draw();
          });
     $('#dropdown2').on('change', function () {
-        table.columns(3).search( this.value ).draw();
-         });
-    $('#dropdown3').on('change', function () {
-        table.columns(5).search( this.value ).draw();
-         });
-
-         $('#dropdown4').on('keyup keypress change', function () {
         table.columns(6).search( this.value ).draw();
          });
+    $('#dropdown3').on('change', function () {
+        table.columns(4).search( this.value ).draw();
+         });
+
 
 $.fn.dataTable.ext.search.push(
 function (settings, data, dataIndex) 
@@ -256,7 +253,7 @@ function (settings, data, dataIndex)
             min_val_time =  min_val;
             max_val_time =  max_val;
 
-			var startDate = data[6];
+			var startDate = data[3];
             s_time = startDate;
 			if(s_time >= min_val_time && s_time <= max_val_time)
 			{
