@@ -29,11 +29,13 @@ module.exports = function(sequelize, DataTypes) {
 		email: {
 			type: DataTypes.STRING(200),
 			allowNull: true,
+			defaultValue: '',
 			field: 'email'
 		},
 		password: {
 			type: DataTypes.STRING(255),
 			allowNull: true,
+			defaultValue: '',
 			field: 'password'
 		},
 		forgotPassword: {
@@ -45,11 +47,13 @@ module.exports = function(sequelize, DataTypes) {
 		country: {
 			type: DataTypes.STRING(50),
 			allowNull: true,
+			defaultValue: '',
 			field: 'Country'
 		},
 		dob: {
 			type: DataTypes.STRING(20),
 			allowNull: true,
+			defaultValue: '',
 			field: 'dob'
 		},
 		gender: {
@@ -66,17 +70,19 @@ module.exports = function(sequelize, DataTypes) {
 		city: {
 			type: DataTypes.STRING(50),
 			allowNull: true,
+			defaultValue: '',
 			field: 'city'
 		},
 		age: {
 			type: DataTypes.INTEGER(11),
 			allowNull: true,
+			defaultValue: '',
 			field: 'age'
 		},
 		notificationStatus: {
 			type: DataTypes.INTEGER(11),
 			allowNull: true,
-			defaultValue: '0',
+			defaultValue: '1',
 			field: 'notification_status'
 		},
 		lat: {
@@ -107,6 +113,18 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			defaultValue: '',
 			field: 'device_token'
+		},
+		loginType: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			defaultValue: '1',
+			field: 'loginType'
+		},
+		socialId: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			defaultValue: '',
+			field: 'socialId'
 		},
 		createdAt: {
 			type: DataTypes.DATE,

@@ -16,7 +16,8 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		images: {
 			type: DataTypes.STRING(255),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: "",
 			field: 'images'
 		},
 		createdAt: {

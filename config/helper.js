@@ -1,4 +1,6 @@
 /* const bcrypt = require('bcrypt'); */
+const db=require('../models');
+const user =db.users;
 const config = require('./config');
 const contant = require('../constant');
 const crypto = require('crypto');
@@ -35,7 +37,7 @@ module.exports = {
             return;
         } else {
             if (required.hasOwnProperty('security_key')) {
-                if (required.security_key != "orderup") {
+                if (required.security_key != "votecast@123") {
                     message = "Invalid security key";
                     res.status(403).json({
                         'success': false,
@@ -218,6 +220,20 @@ module.exports = {
 
 
     },
+    userdetail:async function(userid) {
+        
+        try {
+            const data = await user.findOne({
+                attributes:[`id`, `username`, `profile_image`, `phone`, `email`, `Country`, `dob`, `gender`, `state`, `city`, `age`, `notification_status`, `lat`, `lng`, `loginType`, `auth_key`, `device_type`, `device_token`, `socialId`],
+                where: {
+                  id: userid,
+                }
+            });
+            return data;
+        } catch (err) {
+          throw err;
+        }
+   }, 
      send_emails: function(otp,data,resu) {
         
         try {
@@ -254,7 +270,7 @@ module.exports = {
         let key = 'abc'+new Date().getTime();
         return crypto.createHash('sha1').update(key).digest('hex');        
     },
-    image_upload: async function(image){
+    image_upload: function(image){
        if (image) {
             var extension = path.extname(image.name);
             var filename = uuid() + extension;
@@ -267,6 +283,19 @@ module.exports = {
         }
 
     },
+    image_upload_post:  function(image){
+        if (image) {
+             var extension = path.extname(image.name);
+             var filename = uuid() + extension;
+             var sampleFile = image;
+             sampleFile.mv(process.cwd() + '/public/images/post/' + filename, (err) => {
+                 if (err) throw err;
+             });
+ 
+             return filename;
+         }
+ 
+     },
     
       
 }

@@ -4,9 +4,9 @@
  const category = require('../controller/category_controller');
  const faq = require('../controller/faq_controller');
  const post = require('../controller/posts_controller');
+ const api = require('../controller/api_controller');
 
-
-module.exports = function (app) {
+ module.exports = function (app) {
      /*---------------------dashboard--------------------*/
     app.route('/admin').get(admin.login);
 	app.route('/admin/get_dashboard_count').get(admin.get_dashboard_count);
@@ -63,6 +63,23 @@ module.exports = function (app) {
       app.route('/admin/post_statuschange').post(post.post_statuschange);
       app.route('/admin/deletepost').post(post.delete_post);
       app.route('/admin/viewposts').get(post.viewposts);
+	  
+	   /*-----------------------api---------------------------*/
+
+		app.route('/api/signIn').post(api.login);
+		app.route('/api/logout').post(api.logout);
+		app.route('/api/signUp').post(api.sign_up);
+		app.route('/api/social_login').post(api.social_login);
+		app.route('/api/forgot_password').post(api.forgot_password); 
+		app.route('/api/url_id/:id').get(api.url_id); 
+		app.route('/api/resetPassword').post(api.resetPassword); 
+		app.route('/api/ChangePassword').post(api.ChangePassword); 
+		app.route('/api/changenotistatus').post(api.changenotistatus); 
+		app.route('/api/createpost').post(api.createpost); 
+		app.route('/api/homepagepostlist').post(api.homepagepostlist); 
+		app.route('/api/getcategorylist').get(api.getcategorylist); 
+		app.route('/api/getfaqlist').get(api.getfaqlist); 
+		app.route('/api/getcontent').get(api.getcontent); 
 
 }
 
