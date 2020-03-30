@@ -6,6 +6,7 @@ const terms = db.terms
 const posts = db.posts;
 const vote = db.votecasting;
 const postsImages = db.postsImages;
+const connection = db.connections;
 var   crypto = require('crypto');
 const helper = require('../config/helper');
 const jsonData = require('../config/jsonData');
@@ -247,6 +248,63 @@ module.exports = {
           let msg = 'Try again Sometime';
           jsonData.invalid_status(res, msg)
         }
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  editprofile: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        auth_key: req.headers.auth_key,
+        name: req.body.name,
+        email: req.body.email,
+        country: req.body.country,
+        dob: req.body.dob,
+        city: req.body.city,
+        state: req.body.state,
+        gender: req.body.gender,
+        age: req.body.age,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const user_data = await user.findOne({
+        where: {
+          authKey: requestdata.auth_key
+        }
+      });
+      if (user_data) {
+        let imageName = user_data.dataValues.profileImage;
+        let userid = user_data.dataValues.id;
+        if (req.files && req.files.profile_image) {
+          imageName = helper.image_upload(req.files.profile_image);
+        }
+        const detail_data = await user.update({
+          username: requestdata.name,
+          email: requestdata.email,
+          profileImage: imageName,
+          country: requestdata.country,
+          dob: requestdata.dob,
+          gender: requestdata.gender,
+          state: requestdata.state,
+          city: requestdata.city,
+          age: requestdata.age,
+        },
+          {
+            where:
+            {
+              id: userid
+            }
+          });
+        let msg = 'Updated Successfully';
+        let data = await helper.userdetail(userid);
+        jsonData.true_status(res, data, msg)
+      }
+      else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
       }
     }
     catch (error) {
@@ -557,8 +615,9 @@ module.exports = {
                 }); 
               }
         }
+        let response = await helper.postdetail(userid, postid, res);
           let msg = 'Post Sucessfully Created';
-          jsonData.true_status(res, save, msg);
+          jsonData.true_status(res, response, msg);
         } else {
           let msg = 'Try Again Somthing Wrong';
           jsonData.true_status(res, msg);
@@ -610,7 +669,9 @@ module.exports = {
             model: postsImages,
             attributes: ['id',
             [sequelize.literal('case when postsImages.`images`="" then "" else  CONCAT("http://'+req.get('host')+'/images/post/", postsImages.images) end'), 'images'],
-            [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `imageId`=postsImages.id and userId='+userid+')'), 'is_imagevote'],
+            [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `imageId`=postsImages.id and userId='+userid+')'), 'is_imagevote'], 
+            [sequelize.literal('(SELECT  ifnull(count(*),0) as count FROM `votecasting` WHERE `imageId`=postsImages.id)'), 'imagevote'], 
+            [sequelize.literal('(SELECT ifnull(round((((SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `imageId`=postsImages.id) / (SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `postId`=posts.id)) * 100),2),0) )'), 'percentage'],            
           ],
             on: {
               col1: sequelize.where(sequelize.col('postsImages.postId'), '=', sequelize.col('posts.id')),
@@ -633,6 +694,277 @@ module.exports = {
     } catch (errr) {
       console.log(errr,"--------------------errr-----------");
       jsonData.wrong_status(res, errr)
+    }
+  },
+  userlist: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const userdata = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (userdata) {
+        let userid =userdata.dataValues.id;
+        const user_data = await user.findAll({
+          attributes: [`id`, `username`,'profile_image',
+          [sequelize.literal('(SELECT case when ifnull(count(*),0)= 0 then 0 else 1 end FROM `connections` WHERE `senderId`='+userid+')'), 'is_following'], 
+          [sequelize.literal('(SELECT case when ifnull(count(*),0)= 0 then 0 else 1 end  FROM `connections` WHERE `receiverId`='+userid+')'), 'is_followers'], 
+        ],
+          where: {
+            [Op.and]: [
+              sequelize.literal('status=1'),
+              sequelize.literal('id!='+userid),
+          ]
+          }
+        });
+        let msg = 'User list';
+        jsonData.true_status(res, user_data, msg)
+      } else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  myprofile: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const userdata = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (userdata) {
+        let userid =userdata.dataValues.id;
+        let user_data = await user.findOne({
+          attributes: [`id`, `username`, `profile_image`, `phone`, `email`, `Country`, `dob`, `gender`, `state`, `city`, `age`, `notification_status`, `lat`, `lng`, `loginType`, `auth_key`, `device_type`, `device_token`, `socialId`,
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `connections` WHERE `senderId`='+userid+')'), 'following'], 
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `connections` WHERE `receiverId`='+userid+')'), 'followers'], 
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `posts` WHERE status=1 and `userId`='+userid+')'), 'postcount'], 
+        ],
+          where: {
+            [Op.and]: [
+              sequelize.literal('status=1'),
+              sequelize.literal('id='+userid),
+          ]
+          }
+        });
+        let postdata = await posts.findAll({
+          attributes:[`id`, `userId`, `catId`, `description`, `status`, 
+          [sequelize.literal('UNIX_TIMESTAMP(posts.createdAt)'), 'createdAt'],
+          [sequelize.literal('(SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `postId`=posts.id)'), 'totalvote'],
+          [sequelize.literal('(SELECT case when `profile_image`="" then "" else  CONCAT("http://'+req.get('host')+'/images/users/", profile_image) end as userimage FROM users where id = posts.userId)'), 'userimage'],
+          [sequelize.literal('(SELECT username FROM users where id = posts.userId)'), 'username'],
+          [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `postId`=posts.id and userId='+userid+')'), 'is_vote'],
+        ],
+          where: {
+            status: 1,
+            userId:userid,
+          },
+          include:[{
+            model: postsImages,
+            attributes: ['id',
+            [sequelize.literal('case when postsImages.`images`="" then "" else  CONCAT("http://'+req.get('host')+'/images/post/", postsImages.images) end'), 'images'],
+            [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `imageId`=postsImages.id and userId='+userid+')'), 'is_imagevote'], 
+            [sequelize.literal('(SELECT  ifnull(count(*),0) as count FROM `votecasting` WHERE `imageId`=postsImages.id)'), 'imagevote'], 
+            [sequelize.literal('(SELECT ifnull(round((((SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `imageId`=postsImages.id) / (SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `postId`=posts.id)) * 100),2),0) )'), 'percentage'],            
+          ],
+            on: {
+              col1: sequelize.where(sequelize.col('postsImages.postId'), '=', sequelize.col('posts.id')),
+            },
+          }],
+        });
+        let finaldata ={
+          userdetail:user_data,
+          postdata:postdata
+        }
+        let msg = 'My profile';
+        jsonData.true_status(res, finaldata, msg)
+      } else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  otheruserprofile: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+        userid: req.query.userid,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      let userid =requestdata.userid
+      const userdata = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (userdata) {
+        let loginuserid =userdata.dataValues.id
+        let user_data = await user.findOne({
+          attributes: [`id`, `username`, `profile_image`, `phone`, `email`, `Country`, `dob`, `gender`, `state`, `city`, `age`, `notification_status`, `lat`, `lng`, `loginType`, `auth_key`, `device_type`, `device_token`, `socialId`,
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `connections` WHERE `senderId`='+userid+')'), 'following'], 
+          [sequelize.literal('(SELECT case when ifnull(count(*),0)=0 then 0 else 1 end FROM `connections` WHERE `senderId`='+userid+' and `receiverId`='+loginuserid+' )'), 'is_following'], 
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `connections` WHERE `receiverId`='+userid+')'), 'followers'], 
+          [sequelize.literal('(SELECT case when ifnull(count(*),0)=0 then 0 else 1 end FROM `connections` WHERE `receiverId`='+userid+' and `senderId`='+loginuserid+' )'), 'is_followers'], 
+          [sequelize.literal('(SELECT ifnull(count(*),0) FROM `posts` WHERE status=1 and `userId`='+userid+')'), 'postcount'], 
+        ],
+          where: {
+            [Op.and]: [
+              sequelize.literal('status=1'),
+              sequelize.literal('id='+userid),
+          ]
+          }
+        });
+        let postdata = await posts.findAll({
+          attributes:[`id`, `userId`, `catId`, `description`, `status`, 
+          [sequelize.literal('UNIX_TIMESTAMP(posts.createdAt)'), 'createdAt'],
+          [sequelize.literal('(SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `postId`=posts.id)'), 'totalvote'],
+          [sequelize.literal('(SELECT case when `profile_image`="" then "" else  CONCAT("http://'+req.get('host')+'/images/users/", profile_image) end as userimage FROM users where id = posts.userId)'), 'userimage'],
+          [sequelize.literal('(SELECT username FROM users where id = posts.userId)'), 'username'],
+          [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `postId`=posts.id and userId='+loginuserid+')'), 'is_vote'],
+        ],
+          where: {
+            status: 1,
+            userId:userid,
+          },
+          include:[{
+            model: postsImages,
+            attributes: ['id',
+            [sequelize.literal('case when postsImages.`images`="" then "" else  CONCAT("http://'+req.get('host')+'/images/post/", postsImages.images) end'), 'images'],
+            [sequelize.literal('(SELECT case when ifnull(count(*),0) = 0 then 0 else 1 end as count FROM `votecasting` WHERE `imageId`=postsImages.id and userId='+loginuserid+')'), 'is_imagevote'], 
+            [sequelize.literal('(SELECT  ifnull(count(*),0) as count FROM `votecasting` WHERE `imageId`=postsImages.id)'), 'imagevote'], 
+            [sequelize.literal('(SELECT ifnull(round((((SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `imageId`=postsImages.id) / (SELECT ifnull(count(*),0)as count FROM `votecasting` WHERE `postId`=posts.id)) * 100),2),0) )'), 'percentage'],            
+          ],
+            on: {
+              col1: sequelize.where(sequelize.col('postsImages.postId'), '=', sequelize.col('posts.id')),
+            },
+          }],
+        });
+        let finaldata ={
+          userdetail:user_data,
+          postdata:postdata
+        }
+        let msg = 'Other User profile';
+        jsonData.true_status(res, finaldata, msg)
+      } else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  followerslist: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const userdata = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (userdata) {
+        let userid =userdata.dataValues.id;
+        var getfollowerslist  = await user.sequelize.query('select id,username,profile_image from users where id in (SELECT senderId FROM `connections` WHERE `receiverId`='+userid+')',{
+          type: sequelize.QueryTypes.SELECT
+        });
+  
+        let msg = 'Followers User list';
+        jsonData.true_status(res, getfollowerslist, msg)
+      } else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  followinglist: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const userdata = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (userdata) {
+        let userid =userdata.dataValues.id;
+        var getfollowinglist  = await user.sequelize.query('select id,username,profile_image from users where id in (SELECT receiverId FROM `connections` WHERE `senderId`='+userid+')',{
+          type: sequelize.QueryTypes.SELECT
+        });
+  
+        let msg = 'Following User list';
+        jsonData.true_status(res, getfollowinglist, msg)
+      } else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  follow: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        auth_key: req.headers.auth_key,
+        otheruserid: req.body.otheruserid,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const user_data = await user.findOne({
+        where: {
+          authKey: requestdata.auth_key
+        }
+      });
+      if (user_data) {
+        let userid =user_data.dataValues.id;
+        const create_follow= await connection.create({
+          senderId: userid, 
+          receiverId : requestdata.otheruserid
+        });
+
+        let msg = 'follow Successfully';
+        jsonData.true_status(res, create_follow, msg)
+      }
+      else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
     }
   },
 }

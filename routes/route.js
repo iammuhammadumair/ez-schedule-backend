@@ -69,7 +69,9 @@
 		app.route('/api/signIn').post(api.login);
 		app.route('/api/logout').post(api.logout);
 		app.route('/api/signUp').post(api.sign_up);
+		app.route('/api/editprofile').post(api.editprofile);
 		app.route('/api/social_login').post(api.social_login);
+		app.route('/api/follow').post(api.follow);
 		app.route('/api/forgot_password').post(api.forgot_password); 
 		app.route('/api/url_id/:id').get(api.url_id); 
 		app.route('/api/resetPassword').post(api.resetPassword); 
@@ -80,6 +82,11 @@
 		app.route('/api/getcategorylist').get(api.getcategorylist); 
 		app.route('/api/getfaqlist').get(api.getfaqlist); 
 		app.route('/api/getcontent').get(api.getcontent); 
+		app.route('/api/userlist').get(api.userlist); 
+		app.route('/api/myprofile').get(api.myprofile); 
+		app.route('/api/otheruserprofile').get(api.otheruserprofile); 
+		app.route('/api/followinglist').get(api.followinglist); 
+		app.route('/api/followerslist').get(api.followerslist); 
 
 }
 
