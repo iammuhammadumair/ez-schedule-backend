@@ -6,6 +6,7 @@ const terms = db.terms
 const posts = db.posts;
 const vote = db.votecasting;
 const postsImages = db.postsImages;
+const notifcation = db.notifcations
 const connection = db.connections;
 var   crypto = require('crypto');
 const helper = require('../config/helper');
@@ -934,6 +935,58 @@ module.exports = {
       jsonData.wrong_status(res, error)
     }
   },
+notifiactionlist: async function (req, res) {
+    try {
+       const required = {
+        security_key: req.headers.security_key,
+        authKey: req.headers.auth_key,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const user_data = await user.findOne({
+        where: {
+          authKey: requestdata.authKey,
+        }
+      });
+      if (user_data) {
+        var userId = user_data.dataValues.id
+        var notifcation_data = await notifcation.findAll({
+          attributes: [`id`, `senderId`, `recieverId`, `data`, `notiType`, `message`, `isRead`, `createdAt`,
+            [sequelize.literal('(select username from users where id=notifcations.senderId)'), 'username'],
+            [sequelize.literal('(select profile_image from users where id=notifcations.senderId)'), 'userImage'],
+            [sequelize.literal('(SELECT count(*) FROM `notifcations` WHERE `recieverId`=' + userId + ' and `isRead`=0 )'), 'unreadcount'],
+          ],
+          where: {
+            recieverId: userId
+          }
+        });
+        notifcation_data = notifcation_data.map(notification => {
+          if (helper.isJson(notification.data)) {
+            notification.data = JSON.parse(notification.data);
+          } else {
+            notification.data = {};
+          }
+          return notification;
+        });
+
+          let notifcationupdate = await notifcation.update({
+            isRead: 1
+          }, {
+            where: {
+              recieverId: userId
+            }
+          });
+        let msg = 'Notification List';
+        jsonData.true_status(res, notifcation_data, msg)
+      } else {
+        let msg = 'Invalid authorization_key';
+        jsonData.invalid_status(res, msg)
+      }
+    } catch (errr) {
+      console.log(errr, "----errr");
+      jsonData.wrong_status(res, errr)
+    }
+  },
   follow: async function (req, res) {
     try {
       const required = {
@@ -956,6 +1009,41 @@ module.exports = {
         });
 
         let msg = 'follow Successfully';
+        jsonData.true_status(res, create_follow, msg)
+      }
+      else {
+        let msg = 'Invalid authorization key';
+        jsonData.invalid_status(res, msg)
+      }
+    }
+    catch (error) {
+      jsonData.wrong_status(res, error)
+    }
+  },
+  unfollow: async function (req, res) {
+    try {
+      const required = {
+        security_key: req.headers.security_key,
+        auth_key: req.headers.auth_key,
+        otheruserid: req.body.otheruserid,
+      };
+      const non_required = {};
+      let requestdata = await helper.vaildObject(required, non_required, res);
+      const user_data = await user.findOne({
+        where: {
+          authKey: requestdata.auth_key
+        }
+      });
+      if (user_data) {
+        let userid =user_data.dataValues.id;
+        const create_follow= await connection.destroy({
+          where: {
+               senderId: userid, 
+               receiverId : requestdata.otheruserid
+              }
+        });
+
+        let msg = 'Unfollow Successfully';
         jsonData.true_status(res, create_follow, msg)
       }
       else {
