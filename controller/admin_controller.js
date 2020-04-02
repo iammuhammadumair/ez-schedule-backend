@@ -102,8 +102,16 @@ module.exports = {
     const user_count = await users.count({});
     const category_count = await category.count({});
     const post=await posts.count({});
-    const faq_count=await faq.count({});
-    /*console.log(total_amount,"total_amount");return;*/
+	let faq_count = await database.query("select COUNT(*) as total from faq ", {
+		model: faq,
+        mapToModel: true,
+        type: database.QueryTypes.SELECT
+      });
+	   if (faq_count) {
+                faq_count = faq_count.map(value => {
+                  return value.toJSON();
+                 });
+                }
 
      let countdata={
         user_count:user_count,
@@ -111,9 +119,9 @@ module.exports = {
         postdetail:postdetail,
         newusers:user_data, 
         category:category_count ,
-        faq:faq_count
+        faq:faq_count[0].total
      }
-     /*console.log(countdata,"countdata");return;*/
+     
      res.render('admin/dashboard', {sessiondata: req.session,countdata: countdata, msg: req.flash('msg'),  title: 'dashboard'});
     } else {
       req.flash('msg', 'Please login first');
