@@ -38,6 +38,6 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		}
 	}, {
-		tableName: 'FAQ'
+		tableName: 'faq'
 	});
 };

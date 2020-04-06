@@ -33,6 +33,6 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'updatedAt'
 		}
 	}, {
-		tableName: 'postsImages'
+		tableName: 'postsimages'
 	});
 };
