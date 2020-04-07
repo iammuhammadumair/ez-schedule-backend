@@ -301,8 +301,8 @@ module.exports = {
             var mailOptions = {
                 from: 'test978056@gmail.com',
                 to: data.dataValues.email,
-                subject: 'Ordersup: Forgot password',
-                html: 'Click here for change password <a href="http://localhost:3000/api/url_id/' + otp + '"> Click</a>'
+                subject: 'Vote Cast: Forgot password',
+                html: 'Click here for change password <a href="http://202.164.42.227:3182/api/url_id/' + otp + '"> Click</a>'
             };
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
