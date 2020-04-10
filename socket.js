@@ -133,8 +133,8 @@ module.exports = function (io) {
               socket.emit("body", getdata);
             }
             io.to(get_id.socketId).emit('body', getdata);
-            var get_list = await fun.get_chat_list(get_data);
-            io.to(get_id.socketId).emit('get_list', get_list);
+       //     var get_list = await fun.get_chat_list(get_data);
+       //     io.to(get_id.socketId).emit('get_list', get_list);
 
           }
 
@@ -190,8 +190,8 @@ module.exports = function (io) {
               socket.emit("body", getdata);
             }
             io.to(get_id.socketId).emit('body', getdata);
-            var get_list = await fun.get_chat_list(get_data);
-            io.to(get_id.socketId).emit('get_list', get_list);
+            //var get_list = await fun.get_chat_list(get_data);
+            //io.to(get_id.socketId).emit('get_list', get_list);
           }
 
         }
