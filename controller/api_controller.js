@@ -716,7 +716,7 @@ module.exports = {
         const user_data = await user.findAll({
           attributes: [`id`, `username`,'profile_image',
           [sequelize.literal('(SELECT case when ifnull(count(*),0)= 0 then 0 else 1 end FROM `connections` WHERE `senderId`='+userid+')'), 'is_following'], 
-          [sequelize.literal('(SELECT case when ifnull(count(*),0)= 0 then 0 else 1 end  FROM `connections` WHERE `senderId`=users.id and `receiverId`='+userid+')'), 'is_followers'], 
+          [sequelize.literal('(SELECT case when ifnull(count(*),0)= 0 then 0 else 1 end  FROM `connections` WHERE `senderId`='+userid+' and `receiverId`=users.id)'), 'is_followers'], 
         ],
           where: {
             [Op.and]: [
