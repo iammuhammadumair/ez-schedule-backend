@@ -1,5 +1,5 @@
 
-const nodemailer = require('nodemailer');
+//const nodemailer = require('nodemailer');
 const express = require('express');
 const app = express();
 const fileUpload = require('express-fileupload');
@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 //console.log(swaggerUi,"=============swaggerUi");
 const fs = require('fs');
 const Sequelize = require('sequelize');
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 const path = require('path');
 const uuid = require('uuid');
 const expressValidator = require('express-validator');
@@ -35,11 +37,11 @@ app.use(function(req, res, next) {
   });
 
  require('./routes/route')(app);
+ require('./socket')(io);
 
 
 
-
-app.listen(3182, function () {
+http.listen(3182, function () {
     console.log('Node app is running on port 3182');
 });
 
