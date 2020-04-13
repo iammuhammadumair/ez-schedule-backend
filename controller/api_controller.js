@@ -196,7 +196,6 @@ module.exports = {
         security_key: req.headers.security_key,
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
         country: req.body.country,
         dob: req.body.dob,
         city: req.body.city,
@@ -205,6 +204,7 @@ module.exports = {
         age: req.body.age,
       };
       const non_required = {
+		password: req.body.password,
         device_type: req.body.device_type,
         device_token: req.body.device_token,
         profile_image: req.body.profile_image,
