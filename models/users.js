@@ -11,12 +11,13 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		username: {
 			type: DataTypes.STRING(255),
-			allowNull: false,
+			allowNull: true,
+			defaultValue: '',
 			field: 'username'
 		},
 		profileImage: {
 			type: DataTypes.STRING(255),
-			allowNull: false,
+			allowNull: true,
 			defaultValue: '',
 			field: 'profile_image'
 		},
@@ -74,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
 			field: 'city'
 		},
 		age: {
-			type: DataTypes.INTEGER(11),
+			type: DataTypes.STRING(11),
 			allowNull: true,
 			defaultValue: '',
 			field: 'age'
