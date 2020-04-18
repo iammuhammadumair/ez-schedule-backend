@@ -208,6 +208,8 @@ module.exports = {
         device_type: req.body.device_type,
         device_token: req.body.device_token,
         profile_image: req.body.profile_image,
+		social_id: req.body.social_id,
+        loginType: req.body.loginType
       };
       let requestdata = await helper.vaildObject(required, non_required, res);
       const user_data = await user.findOne({
