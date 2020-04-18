@@ -221,35 +221,67 @@ module.exports = {
         let msg = 'Email already exist';
         jsonData.wrong_status(res, msg)
       } else {
-        const password = crypto.createHash('sha1').update(requestdata.password).digest('hex');
-        var auth_create = crypto.randomBytes(20).toString('hex');
-        imageName = '';
-        if (req.files && req.files.profile_image) {
-          imageName = helper.image_upload(req.files.profile_image);
-        }
-        const create_user = await user.create({
-          username: requestdata.name,
-          email: requestdata.email,
-          password: password,
-          profileImage: imageName,
-          country: requestdata.country,
-          dob: requestdata.dob,
-          gender: requestdata.gender,
-          state: requestdata.state,
-          city: requestdata.city,
-          age: requestdata.age,
-          authKey: auth_create,
-          deviceType: requestdata.device_type,
-          deviceToken: requestdata.device_token,
-        });
+		if(requestdata.social_id) {
+			 var auth_create = crypto.randomBytes(80).toString('hex');
+			  imageName = '';
+				if (req.files && req.files.profile_image) {
+				  imageName = helper.image_upload(req.files.profile_image);
+				}
+			const update_details = await user.update({
+				  username: requestdata.name,
+				  email: requestdata.email,
+				  password: password,
+				  profileImage: imageName,
+				  country: requestdata.country,
+				  dob: requestdata.dob,
+				  gender: requestdata.gender,
+				  state: requestdata.state,
+				  city: requestdata.city,
+				  age: requestdata.age,
+				  authKey: auth_create,
+				  deviceType: requestdata.device_type,
+				  deviceToken: requestdata.device_token,
+				},
+				  {
+					where: {
+					  socialId: requestdata.social_id,
+					}
+				  }
+			);
+			let data2 = await helper.userdetail(requestdata.social_id);
+			let msg = 'Registered successfully';
+			jsonData.true_status(res, data2, msg) 
+		} else {		  
+				const password = crypto.createHash('sha1').update(requestdata.password).digest('hex');
+				var auth_create = crypto.randomBytes(20).toString('hex');
+				imageName = '';
+				if (req.files && req.files.profile_image) {
+				  imageName = helper.image_upload(req.files.profile_image);
+				}
+				const create_user = await user.create({
+				  username: requestdata.name,
+				  email: requestdata.email,
+				  password: password,
+				  profileImage: imageName,
+				  country: requestdata.country,
+				  dob: requestdata.dob,
+				  gender: requestdata.gender,
+				  state: requestdata.state,
+				  city: requestdata.city,
+				  age: requestdata.age,
+				  authKey: auth_create,
+				  deviceType: requestdata.device_type,
+				  deviceToken: requestdata.device_token,
+				});
 
-        if (create_user) {
-          let data = await helper.userdetail(create_user.dataValues.id);
-          let msg = 'Registered successfully';
-          jsonData.true_status(res, data, msg)
-        } else {
-          let msg = 'Try again Sometime';
-          jsonData.invalid_status(res, msg)
+					if (create_user) {
+					  let data = await helper.userdetail(create_user.dataValues.id);
+					  let msg = 'Registered successfully';
+					  jsonData.true_status(res, data, msg)
+					} else {
+					  let msg = 'Try again Sometime';
+					  jsonData.invalid_status(res, msg)
+					}
         }
       }
     }
