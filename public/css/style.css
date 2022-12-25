@@ -2591,7 +2591,7 @@ section.content {
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus {
-  background-color: rgb(230, 33, 33) !important; }
+  background-color: #3f51b5 !important; }
 
 .btn-default,
 .btn-default:hover,
@@ -5980,7 +5980,7 @@ fieldset[disabled] .form-control {
   color: #bbb; }
 
 .pagination li.active a {
-  background-color:#e88f21; }
+  background-color:#3f51b5; }
 
 .pagination li {
   -webkit-border-radius: 0;

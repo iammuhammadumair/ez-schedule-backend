@@ -35,10 +35,11 @@
                                       </div>
                                       <div class="col-sm-6">
                                         <div class="form-group">
-                                          <label for="" class="col-sm-5  control-label">Age</label>
+                                          <label  class="col-sm-5  control-label">Email Address</label>
                                             <div class="form-line">
-                                                <input type="number" name="age" class="form-control" placeholder="" required>
+                                                <input type="email" name="email" class="form-control" placeholder="" required>
                                             </div>
+                                          
                                         </div>
                                     </div>
                                       
@@ -46,9 +47,9 @@
                                     <div class="row clearfix">
                                       <div class="col-sm-6">
                                         <div class="form-group">
-                                          <label  class="col-sm-5  control-label">Email Address</label>
+                                          <label for="" class="col-sm-5  control-label">Phone No.</label>
                                             <div class="form-line">
-                                                <input type="email" name="email" class="form-control" placeholder="" required>
+                                                <input type="text" name="phone" class="form-control" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +62,7 @@
                                       </div>
                                   </div>
                                     </div>
-                                    <div class="row clearfix">
+                                    <!-- <div class="row clearfix">
                                       <div class="col-sm-4">
                                         <div class="form-group">
                                           <label  class="col-sm-5  control-label">City</label>
@@ -86,8 +87,8 @@
                                           </div>
                                       </div>
                                   </div>
-                                    </div>
-                                    <div class="row clearfix"  >  
+                                    </div> -->
+                                    <!-- <div class="row clearfix"  >  
                                         <div class="col-sm-6" >
                                             <div class="form-group ">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
@@ -107,12 +108,12 @@
                                                 <label class="label-text" for="female">Female</label>
                                               </div> 
                                           </div>
-                                      </div>
-                                    </div>                            
-                                     <div class="form-group">
+                                      </div> 
+                                    </div>   -->                         
+                                     <div class="form-group" style="text-align: center;">
                                          <input type="submit" id="updatebtn"  id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Submit">
                                          <span id="message"></span>
-                                    </div>
+                                    </div>  
                             </form>
                                 </div>
                             </div>
@@ -126,7 +127,7 @@
     </section>
 <% include  layout/footer.ejs %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script> -->
 
 <script type="text/javascript">
  
@@ -158,18 +159,18 @@ $('#blah2').click(function(){
         required: true,
         Email: true
       },
-      country:{
-          required:true,
-          country:true
-      },
+      // country:{
+      //     required:true,
+      //     country:true
+      // },
       password:{
         required:true,
         minlength:6,
       },
-      city:{
-        required:true,
-      },
-      age:{
+      // city:{
+      //   required:true,
+      // },
+      phone:{
         required:true,
       },
       dob:{
@@ -197,7 +198,7 @@ $('#blah2').click(function(){
       city:{
         required:"City field is required."
       },
-      age:{
+      Phone:{
         required: "Age field is required"
       }
     }

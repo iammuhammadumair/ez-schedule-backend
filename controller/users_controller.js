@@ -36,27 +36,30 @@ module.exports = {
                 let image = req.files.image;
                 var extension = path.extname(image.name);
                 var fileimage = uuid() + extension;
-                image.mv(process.cwd() + '/public/images/users/' + fileimage, function (err) {
+                await image.mv(process.cwd() + '/public/images/users/' + fileimage, function (err) {
                 if(err)
                     return res.status(500).send(err);
                 });
-               image_name = fileimage;
+               image_name = req.protocol + '://' + req.get('host') + '/images/users/' + fileimage;
             }
        
         var auth_create = crypto.randomBytes(20).toString('hex');
+			  const password = crypto.createHash('sha1').update(req.body.password).digest('hex');
+
         const adduser= await users.create({
           username: req.body.name, 
           profileImage: image_name, 
            email: req.body.email, 
-           password:req.body.password,
-              country:req.body.country, 
-              dob:req.body.dob, 
-              gender:req.body.gender, 
-              city:req.body.city,
-              age:req.body.age,
-              state:req.body.state,
-              lat: req.body.lat, 
-              lng: req.body.lng,
+           password:password,
+           phone:req.body.phone, 
+           user_type:1,
+              // dob:req.body.dob, 
+              // gender:req.body.gender, 
+              // city:req.body.city,
+              // age:req.body.age,
+              // state:req.body.state,
+              // lat: req.body.lat, 
+              // lng: req.body.lng,
               auth_key:auth_create
        });
        //console.log(adduser, 'yioiutr===='); return
@@ -76,11 +79,11 @@ module.exports = {
   userslist : async function (req, res) {
      if (req.session && req.session.auth == true) {
       var users_data =  await users.findAll({
-          attributes:['id','username','profileImage','email','status','country','gender','state','city','age',[sequelize.literal('(SELECT count(userId) FROM posts WHERE users.id = posts.userId)'), 'totalposts'],
-          [sequelize.literal('(SELECT count(receiverId) FROM connections WHERE users.id = connections.receiverId)'), 'connection'],
-          [sequelize.literal('(SELECT count(*) FROM `votecasting` WHERE postId in (SELECT id FROM `posts` WHERE `userId`=users.id))'), 'votereceiver'],
-          [sequelize.literal('(SELECT count(*) FROM `votecasting` WHERE userId =users.id)'), 'sendvote'],
+          attributes:['id','username','profile_image','email','status','phone',
         ],  
+         where : {
+                 user_type : 1
+               },
           order: [
             ['id', 'DESC'],
         ],  
@@ -159,8 +162,9 @@ module.exports = {
    update_user: async function (req, res) {
    
     if (req.session && req.session.auth == true) {
-         image_name=req.body.hiddenimage;
          id=req.body.id;
+        //  console.log(id);
+        // //  return;
         if (req.files && req.files.image) {
               
               let image = req.files.image;
@@ -170,34 +174,40 @@ module.exports = {
               if(err)
                   return res.status(500).send(err);
               });
-             image_name = fileimage;
+             image_name = req.protocol + '://' + req.get('host') + '/images/users/' + fileimage;
+          }else{
+         image_name=req.body.hiddenimage;
+            
           }
           const count = await users.count({
             where : {
               email : req.body.email,
+              // [Op.not]: [
+              //   { id: [1,2,3] }
+              // ],
               id: {
-                $ne: req.body.id
+                $not: req.body.id
               }
             }
-      });
+          });
+      // console.log(count);
+      // return;
      if(count > 0) {
        req.flash('msg', 'Email already Exist');
        res.redirect('/admin/userslist');
        return;
      }
-      const update_users= await users.update({
-              username: req.body.name, 
-              profileImage: image_name, 
-              email: req.body.email, 
-              country:req.body.country, 
-              dob:req.body.dob, 
-              gender:req.body.gender,
-              city:req.body.city,
-              age:req.body.age,
-              state:req.body.state,
-              lat: req.body.lat, 
-              lng: req.body.lng
-            },
+     var updateData={
+      username: req.body.name, 
+      profileImage: image_name, 
+      email: req.body.email, 
+      phone:req.body.phone, 
+    }
+    if(req.body.password){
+      const password = crypto.createHash('sha1').update(req.body.password).digest('hex');
+      updateData.password=password;
+    }
+      const update_users= await users.update(updateData,
             {
             where: {
                id: req.body.id

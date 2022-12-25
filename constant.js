@@ -8,6 +8,7 @@ module.exports = {
     password: 'cqlsys123',
     database:'ordersup'
   },
+  'APP_NAME':'Barbuz Club',
   //'upload_path': base_path + 'public/',
    'url_path': 'http://localhost:3000',
   //'url_path': 'http://202.164.42.227:3000',

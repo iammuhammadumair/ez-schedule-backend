@@ -3,12 +3,17 @@ const db = require('../models');
 var crypto = require('crypto')
 const admin = db.admin;
 const users = db.users;
+const barbers = db.barbers;
 const posts = db.posts;
 const faq = db.faq
 const vote = db.votecasting;
 const category = db.category
 const database = require('../db/db');
 const sequelize = require('sequelize');
+const orders = db.orders;
+const helper = require('../config/helper');
+
+
 posts.belongsTo(users, {
   foreignKey: 'userId'
 });
@@ -17,6 +22,12 @@ posts.belongsTo(category, {
 });
 
 module.exports = {
+    website: async function (req, res) {
+    
+      res.render('web/index',{ msg: req.flash('msg') });
+    
+    
+  },
   
   get_dashboard_count: async (req, res) => {
 
@@ -38,7 +49,7 @@ module.exports = {
 
         var endDate = getYear + "-" + day + "-30";
 
-      user_query = await database.query("select COUNT(*) as total from users where  date((`created_at`)) between '" + fromDate + "' and '" + endDate + "' and  status=1", {
+      user_query = await database.query("select COUNT(*) as total from users where user_type=1 and  date((`created_at`)) between '" + fromDate + "' and '" + endDate + "' and  status=1", {
 
         model: users,
         mapToModel: true,
@@ -99,8 +110,26 @@ module.exports = {
         return value.toJSON();
     });
     
-    const user_count = await users.count({});
+    const user_count = await users.count({
+      where:{
+        user_type:1,
+      }
+    });
+    const barber = await barbers.count({ where:{
+        user_type:2,
+      }});
     const category_count = await category.count({});
+
+   var orders_count = await orders.count({
+           
+            where:{
+              status:[3,4],
+            },
+            order: [
+              ['id', 'DESC'],
+            ]
+          });
+
     const post=await posts.count({});
 	let faq_count = await database.query("select COUNT(*) as total from faq ", {
 		model: faq,
@@ -115,6 +144,8 @@ module.exports = {
 
      let countdata={
         user_count:user_count,
+        barber:barber,
+        orders_count:orders_count,
         post:post,
         postdetail:postdetail,
         newusers:user_data, 
@@ -129,6 +160,8 @@ module.exports = {
     }
   },
   adminlogin: async function (req, res) {
+    // console.log('sdsfsd');
+    // return;
     const admin_password = crypto.createHash('sha1').update(req.body.password).digest('hex');
     /*console.log(req.body,"==================body")*/
          get_details= await admin.findOne({
@@ -137,6 +170,8 @@ module.exports = {
                 password:admin_password,
               }
          });
+        //  console.log(get_details);
+        //  return;
         if(get_details){
                res.session = req.session;
                 req.session.user = get_details.dataValues;
@@ -251,6 +286,67 @@ module.exports = {
         req.flash('msg', 'Current Password is not match');
         res.redirect('/admin/profile')
       }
+  },
+  push: async function (req, res) {
+  if (req.session && req.session.auth == true) {
+    // console.log(req.query.t)
+    users_push = await users.findAll({
+      attributes: ['id','username'],
+
+      where: {
+        status: 1,
+        user_type: req.query.t,
+      },
+    });
+    type=req.query.t;
+       // res.render('admin/userslist', { sessiondata: req.session,response:users_data,data,data1, msg: req.flash('msg'),  title: 'User'});
+
+       res.render('admin/push',
+       {
+        response: users_push,type,
+        msg: req.flash('msg'),
+        sessiondata: req.session,
+        title: 'Push'
+      });
+
+     } else {
+      req.flash('msg', 'Please login first');
+      res.redirect('/admin')
+    }
+  },
+  push_post: async function (req, res) {
+    if (req.session && req.session.auth == true) {
+
+      // console.log(req.body);
+      // return;
+      const push_data={}; 
+      push_data.sent_to_id= req.body.persons ;
+      push_data.notification_code= 1001 ;
+      push_data.sent_data={};
+      push_data.body=req.body.text;
+      await helper.all_users_Notification(push_data);
+
+     /* const update_users= await terms.update({
+        termsContent: req.body.terms,
+      },
+      {
+        where: {
+         id: 1
+       }
+
+     });*/
+      // if(update_users){
+        req.flash('msg', 'Send Successfully');
+        res.redirect('/admin/push?t='+req.body.user_type);
+     /* }else{
+        req.flash('msg', 'Something went wrong,Please try again');
+        res.redirect('/admin/terms');
+      }*/
+    } else {
+      req.flash('msg', 'Please login first');
+      res.redirect('/admin')
+    }
+
   },
   
 }

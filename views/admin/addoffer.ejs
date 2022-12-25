@@ -1,0 +1,232 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Add Offer</h2>
+                        </div>
+                        <div class="body" >
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  enctype='multipart/form-data' method="post" action="createOffer" id="Offers"  >
+                                    <div class="form-group">
+                                       <label>Offer Image</label>
+                                         <div class="image2">
+                                                  <img id="blah2" src="../images/img.jpg"  alt="Offer">
+                                          </div>
+                                    </div>
+                                    <div class="form-group" style="display:none">
+                                      <div class="form-line">
+                                            <input type="file" id="profieimage" name="image" class="form-control" placeholder="Image" required="">
+                                        </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label for="" class="col-sm-5 control-label">Businesses Name</label>
+                                              <div class="form-line">
+                                                  <input type="text" id="" name="businesses_name" class="form-control" placeholder="" required>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label  class="col-sm-5  control-label">Offer</label>
+                                            <div class="form-line">
+                                                <input type="text" name="offer" class="form-control" placeholder="" required>
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                      
+                                  </div>
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label for="" class="col-sm-5  control-label">Zipcode</label>
+                                            <div class="form-line">
+                                                <input type="text" name="zipcode" class="form-control" placeholder="" required>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label for="" class="col-sm-5 control-label">Radius (In Miles)</label>
+                                              <div class="form-line">
+                                                  <input type="number" name="mile_radius" class="form-control" placeholder="" required>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label for="" class="col-sm-5  control-label">Run offer for days</label>
+                                            <div class="form-line">
+                                                <input type="number" name="days" class="form-control" placeholder="" required>
+                                            </div>
+                                        </div>
+                                        </div>                                        
+                                    </div>
+                                    <!-- <div class="row clearfix">
+                                      <div class="col-sm-4">
+                                        <div class="form-group">
+                                          <label  class="col-sm-5  control-label">City</label>
+                                            <div class="form-line">
+                                                <input type="text" name="city" class="form-control" placeholder="" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <div class="form-group">
+                                        <label for="" class="col-sm-5 control-label">State</label>
+                                          <div class="form-line">
+                                              <input type="text" name="state" class="form-control" placeholder="" required>
+                                          </div>
+                                      </div>
+                                  </div>
+                                    <div class="col-sm-4">
+                                      <div class="form-group">
+                                        <label for="" class="col-sm-7 control-label">Country Name</label>
+                                          <div class="form-line">
+                                              <input type="text" name="country" class="form-control" placeholder="" required>
+                                          </div>
+                                      </div>
+                                  </div>
+                                    </div> -->
+                                    <!-- <div class="row clearfix"  >  
+                                        <div class="col-sm-6" >
+                                            <div class="form-group ">
+                                              <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
+                                                <div class="form-line" >
+                                                    <input type="date" name="dob" id="txtDate"  class="form-control " >
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label for="" class="col-sm-5 control-label">Gender</label>
+                                          <div class="col-sm-10">
+                                              <div class="">
+                                                <input type="radio" id="male" checked name="gender" value="1">
+                                                <label class="label-text"  for="male">Male</label>
+                                                <input type="radio" id="female"  name="gender" value="2">
+                                                <label class="label-text" for="female">Female</label>
+                                              </div> 
+                                          </div>
+                                      </div> 
+                                    </div>   -->                         
+                                     <div class="form-group" style="text-align: center;">
+                                         <input type="submit" id="updatebtn"  id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Submit">
+                                         <span id="message"></span>
+                                    </div>  
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script> -->
+
+<script type="text/javascript">
+ 
+$('#blah2').click(function(){
+ $('#profieimage').click();
+ });
+ 
+
+ $.validator.addMethod("lettersonly", function (value, element) {
+    return this.optional(element) || /^[^-\s][a-zA-Z ]+$/i.test(value);
+  }, 'Please enter valid name');
+  jQuery.validator.addMethod("Email", function(value, element) {
+  return this.optional( element ) || /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test( value );
+}, 'Please enter a valid email address.');
+  jQuery.validator.addMethod("countrycode", function(value, element) {
+  return this.optional( element ) ||/^\+?\d+$/.test( value );
+  },'Please enter a valid Country code.');
+  $.validator.addMethod("country", function (value, element) {
+    return this.optional(element) || /^[^-\s][a-zA-Z\s-]+$/i.test(value);
+  }, 'Please enter valid Country Name');
+  
+  $("#Offers").validate({
+    rules: {
+      name: {
+        required: true,
+        lettersonly: true
+      },
+      email: {
+        required: true,
+        Email: true
+      },
+      // country:{
+      //     required:true,
+      //     country:true
+      // },
+      password:{
+        required:true,
+        minlength:6,
+      },
+      // city:{
+      //   required:true,
+      // },
+      phone:{
+        required:true,
+      },
+      dob:{
+        required:true,
+      }
+    },
+    messages: {
+      name: {
+        required: "Name field is required."
+
+      },
+      email: {
+        required: "Email field is required.",
+      },
+      country: {
+        required: "Country field is required."
+      },
+      password:{
+        required: "Password field is required.",
+        minlength: "Password atleast 6 character long."
+      },
+      dob:{
+        required: "Date of Birth field is required"
+      },
+      city:{
+        required:"City field is required."
+      },
+      Phone:{
+        required: "Age field is required"
+      }
+    }
+
+  });
+
+  var dateControler = {
+        		    currentDate : null
+        		}
+
+        		 $(document).on( "change", "#txtDate",function( event, ui ) {
+        		        var now = new Date();
+        		        var selectedDate = new Date($(this).val());
+        		        
+        		        if(selectedDate > now) {
+        		            $(this).val(dateControler.currentDate)
+        		        } else {
+        		            dateControler.currentDate = $(this).val();
+        		        }
+        		    });
+</script>

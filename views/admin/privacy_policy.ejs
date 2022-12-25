@@ -13,12 +13,27 @@
                             <div class="row clearfix">
                                 <div class="col-sm-12">
                                 <form  enctype='multipart/form-data' id="about" method="post" action="update_policy" name="ckform">
+                                   <u> <h6>In English</h6></u>
+
                                     <div class="row clearfix">
                                        
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <textarea id="ckeditor" name="policy" class="form-control" required><%=response.privacyPolicy %>
+                                                  </textarea> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <u> <h6>In Spanish</h6></u>
+
+                                    <div class="row clearfix">
+                                       
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <textarea id="ckeditor" name="policy_spanish" class="form-control" required><%=response.policy_spanish %>
                                                   </textarea> 
                                                 </div>
                                             </div>
@@ -44,6 +59,7 @@
 <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 <script>
    CKEDITOR.replace( 'policy' );
+   CKEDITOR.replace( 'policy_spanish' );
    CKEDITOR.config.height = 400;
 </script>
    

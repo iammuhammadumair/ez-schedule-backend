@@ -1,0 +1,137 @@
+<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+               <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Subscription Setting</h2>
+                        </div>
+                        <div class="body" >
+                            <div class="row clearfix">
+                                <div class="col-sm-12">
+                                <form  enctype='multipart/form-data' method="post" action="update_subscription_setting" id="users"  >
+                                    
+                                    <div class="row clearfix">
+                                      <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label for="" class="col-sm-5 control-label">Price</label>
+                                              <div class="form-line">
+                                                  <input type="number" id="username" name="subscription_price" class="form-control" min="0" value="<%=response.subscription_price %>" placeholder="" required>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-6">
+                                        <div class="form-group">
+                                          <label  class="col-sm-5  control-label">Status</label>
+                                          <br>
+                                            <div class="switch">
+                                                        <label><input class="changestatus"  id="" table="barbers" type="checkbox" value="1" name="subscription_status"  <%=(response.subscription_status==1) ? 'checked' : "" %> >
+                                                            <span class="lever"></span></label>
+                                                    </div>
+                                            <!-- <div class="form-line">
+
+                                              <input type="radio" required="" name="subscription_status" value="1"  class="form-control">Yes
+                                                <input type="radio" required="" name="subscription_status" value="0" class="form-control" >No
+                                            </div> -->
+                                          
+                                        </div>
+                                    </div>
+                                      
+                                  </div>
+                                                     
+                                     <div class="form-group" style="text-align: center;">
+                                         <input type="submit" id="updatebtn"  id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Submit">
+                                         <span id="message"></span>
+                                    </div>  
+                            </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/jquery.geocomplete.js"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAeE84dgZLx40n1DwZUS6Cggul9dARQhtk&libraries=places"></script> -->
+
+<script type="text/javascript">
+ 
+
+  
+  $("#users").validate({
+    rules: {
+      name: {
+        required: true,
+        lettersonly: true
+      },
+      square_account: {
+        required: true,
+      },
+      amount:{
+          required:true,
+          number:true
+      },
+      password:{
+        required:true,
+        minlength:6,
+      },
+      // city:{
+      //   required:true,
+      // },
+      phone:{
+        required:true,
+      },
+      dob:{
+        required:true,
+      }
+    },
+    messages: {
+      name: {
+        required: "Name field is required."
+
+      },
+      square_account: {
+        required: "This field is required.",
+      },
+      country: {
+        required: "Country field is required."
+      },
+      password:{
+        required: "Password field is required.",
+        minlength: "Password atleast 6 character long."
+      },
+      dob:{
+        required: "Date of Birth field is required"
+      },
+      city:{
+        required:"City field is required."
+      },
+      Phone:{
+        required: "Age field is required"
+      }
+    }
+
+  });
+
+  var dateControler = {
+                    currentDate : null
+                }
+
+                 $(document).on( "change", "#txtDate",function( event, ui ) {
+                        var now = new Date();
+                        var selectedDate = new Date($(this).val());
+                        
+                        if(selectedDate > now) {
+                            $(this).val(dateControler.currentDate)
+                        } else {
+                            dateControler.currentDate = $(this).val();
+                        }
+                    });
+</script>

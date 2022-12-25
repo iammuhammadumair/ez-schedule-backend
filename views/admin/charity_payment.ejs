@@ -1,0 +1,186 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+
+<style>
+
+    .add{
+        color:#de7022 !important;
+    }
+.top {
+    margin-bottom: 29px;
+    float: left;
+    width: 100%;
+}
+.left_side{
+    float: left;
+    padding: 1px 7px;
+    width: 50%;
+}
+    </style>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Charities Payments list</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="table-responsive">
+                                    <table class="table" id="usertable" >
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>User</th>
+                                                <th>Charity</th>
+                                                <th>Amount (In $)</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                            <% for(let i in response) {
+                                            if(response[i].user){
+                                            var s =  new Date(response[i].dataValues.createdAt)
+                                             %>
+                                           
+                                             <tr>
+                                                <td><%=parseInt(i)+1%></td>
+                                                <td><%= response[i].user.dataValues.username %></td>
+                                                <td><%=response[i].charity.dataValues.name%></td>
+                                                <td><%=response[i].dataValues.amount%></td>
+                                                <td><%= s.toDateString() %></td>
+                                                
+                                                
+                                            </tr>
+                                            <% }} %>
+                                         </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+<script src="../../plugins/momentjs/moment.js"></script>
+<script src="../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+<script type="text/javascript">
+ $('#blah2').click(function(){
+ $('#profieimage').click();
+ });
+ $(".changestatus").change(function(){
+      var id= $(this).attr('id');
+      var table= $(this).attr('table');
+      var status=0;
+       if($(this).prop("checked") == true){
+           status=1;
+        }
+       else if($(this).prop("checked") == false){
+           status=0;
+       }
+       var ajaxurl = 'charities_statuschange',
+          data = { id: id, table: table,status: status };
+          $.post(ajaxurl, data, function (response) {
+          if(response>0)
+          {
+            window.location.reload();
+          }
+       });
+        
+        
+ });
+$('.delete').click(function () {
+     let _this = $(this);
+    let id = $(this).attr("rel");
+     let table = $(this).attr("table");
+     swal({
+       title: "Are you sure?",
+       text: "Once deleted, you will not be able to recover this data!",
+       icon: "warning",
+       buttons: true,
+       dangerMode: true,
+     })
+       .then((data) => {
+         if (data) {
+           $.ajax({
+             url: "delete_charity",
+             type: "post",
+             data: { id: id, table: table },
+             cache: false,
+             success: function (response) {
+                 swal("Proof! Your data has been deleted!", {
+                 icon: "success",
+               });
+               setTimeout(() => {
+                window.location.reload();
+                },2000);
+               
+             }, error(error) {
+               console.error(error);
+             }
+
+           });
+         }
+       });
+   });
+   var table = $('#usertable').DataTable();
+   $('#dropdown1').on('change', function () {
+         table.columns(2).search( this.value ).draw();
+         });
+    $('#dropdown2').on('change', function () {
+        table.columns(6).search( this.value ).draw();
+         });
+    $('#dropdown3').on('change', function () {
+        table.columns(4).search( this.value ).draw();
+         });
+
+
+$.fn.dataTable.ext.search.push(
+function (settings, data, dataIndex) 
+{
+	   
+       min_val = $('#min').val();
+       max_val = $('#max').val();
+   	if(min_val && max_val)
+   	{
+            min_val_time =  min_val;
+            max_val_time =  max_val;
+
+			var startDate = data[3];
+            s_time = startDate;
+			if(s_time >= min_val_time && s_time <= max_val_time)
+			{
+				return true;
+			}
+			return false;
+   	}
+     return true;
+;
+    }
+    );
+
+$('#min, #max').keyup(function () {
+    table.draw();
+});
+ 
+
+</script>

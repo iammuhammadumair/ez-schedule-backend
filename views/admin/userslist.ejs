@@ -26,7 +26,7 @@
                         <div class="header">
                             <h2>Users list</h2>
                         </div>
-                        <div class="top">
+                        <!-- <div class="top">
                         <div class="col-xs-2">
                             <br>
                                 <h2 class="card-inside-title">Gender Filter</h2>
@@ -78,7 +78,7 @@
                                                 <input type="text" placeholder="MaxAge" class="form-control"  id="max"> 
                                                 </div>
                                         </div>
-                         </div>
+                         </div> -->
                         <div class="body">
                             <div class="row clearfix" >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -88,15 +88,16 @@
                                             <tr>
                                                 <th>S.No</th>
                                                 <th>Name</th>
-                                                <th>Gender</th>
-                                                <th>Age</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+<!-- 
                                                 <th>City</th>
-                                                <th>Province</th>
-                                                <th>Country</th>
-                                                <th>Posts</th>
-                                                <th>Connections</th>
-                                                <th>Votes Sent</th>
-                                                <th>Votes Received</th>
+                                                <th>State</th>
+                                                <th>Country</th> -->
+                                                <!-- <th>Posts</th> -->
+                                                <!-- <th>Connections</th> -->
+                                                <!-- <th>Votes Sent</th> -->
+                                                <!-- <th>Votes Received</th> -->
                                                 <th class="text-center">Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -107,21 +108,21 @@
                                              <tr>
                                                 <td><%=parseInt(i)+1%></td>
                                                 <td><%=response[i].username%></td>
-                                                <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
+                                                <!-- <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
                                                     else{
                                                    %>
                                                   Female
                                                   <% } %>
                             
-                                                </td>
-                                                <td><%=response[i].age%></td>
-                                                <td><%=response[i].city%></td>
-                                                <td><%=response[i].state%></td>
+                                                </td> -->
+                                                <td><%=response[i].email%></td>
+                                                <td><%=response[i].phone%></td>
+                                                <!-- <td><%=response[i].state%></td>
                                                 <td><%=response[i].country%></td>
                                                 <td><%=response[i].totalposts%></td>
                                                 <td><%=response[i].connection%></td>
                                                 <td><%=response[i].sendvote%></td>
-                                                <td><%=response[i].votereceiver%></td>
+                                                <td><%=response[i].votereceiver%></td> -->
                                                 <td class="text-center">
                                                     <div class="switch">
                                                         <label><input class="changestatus"  id="<%=response[i].id%>" table="users" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >

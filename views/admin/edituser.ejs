@@ -13,16 +13,16 @@
                             <div class="row clearfix">
                                 <div class="col-sm-12">
                                 <form  enctype='multipart/form-data' method="post" action="updateuser" id="users">
-                                  <input type="hidden" name="hiddenimage" value="<%=users_data.profileImage%>" >
+                                  <input type="hidden" name="hiddenimage" value="<%=users_data.profile_image%>" >
                                   <input type="hidden" name="id" value="<%=users_data.id%>" >
 
                                     <div class="form-group">
                                        <label>Profile Image</label>
                                          <div class="image2">
-                                                  <% if(users_data.profileImage=="") { %>
+                                                  <% if(users_data.profile_image=="") { %>
                                                   <img id="blah2" src="../images/img.jpg"  alt="User">
                                                   <% } else { %>
-                                                  <img id="blah2" src="../images/users/<%=users_data.profileImage%>"  alt="User">
+                                                  <img id="blah2" src="<%=users_data.profile_image%>"  alt="User">
                                                   <% } %>
                                           </div>
                                     </div>
@@ -42,25 +42,34 @@
                                       </div>
                                       <div class="col-sm-6">
                                         <div class="form-group">
-                                          <label for="" class="col-sm-5  control-label">Age</label>
+                                          <label  class="col-sm-5  control-label">Email Address</label>
                                             <div class="form-line">
-                                                <input type="number" name="age" value="<%=users_data.age%>"class="form-control" placeholder="" required>
+                                                <input type="email" name="email" value="<%=users_data.email%>"class="form-control" placeholder="" required>
                                             </div>
+                                          
                                         </div>
                                     </div>
                                       
                                   </div>
                                     <div class="row clearfix">
-                                      <div class="col-sm-12">
+                                      <div class="col-sm-6">
                                         <div class="form-group">
-                                          <label  class="col-sm-5  control-label">Email Address</label>
+                                          <label  class="col-sm-5  control-label">Phone No.</label>
                                             <div class="form-line">
-                                                <input type="email" name="email" value="<%=users_data.email%>"class="form-control" placeholder="" required>
+                                                <input type="text" name="phone" value="<%=users_data.phone%>"class="form-control" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-sm-6">
+                                      <div class="form-group">
+                                        <label for="" class="col-sm-5 control-label">Password</label>
+                                        <div class="form-line">
+                                          <input type="password" name="password" class="form-control" placeholder="" required>
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div class="row clearfix">
+                                    </div>
+                                    <!-- <div class="row clearfix">
                                       <div class="col-sm-4">
                                         <div class="form-group">
                                           <label  class="col-sm-5  control-label">City</label>
@@ -84,10 +93,10 @@
                                               <input type="text" name="country" value="<%=users_data.country%>" class="form-control" placeholder="" required>
                                           </div>
                                       </div>
-                                  </div>
+                                  </div> -->
                                     </div>
                                     <div class="row clearfix">  
-                                        <div class="col-sm-6">
+                                        <!-- <div class="col-sm-6">
                                             <div class="form-group">
                                               <label for="Phone" class="col-sm-5 control-label">Date of Birth</label>
                                                 <div class="form-line">
@@ -107,8 +116,9 @@
                                               </div> 
                                           </div>
                                       </div>
-                                    </div>                            
-                                     <div class="form-group">
+                                    </div>                             -->
+                                    </div>
+                                     <div class="form-group" style="text-align: center;" >
                                          <input type="submit" id="updatebtn"  id="savebtn" class="btn btn-primary m-t-15 waves-effect" value="Submit">
                                          <span id="message"></span>
                                     </div>

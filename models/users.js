@@ -15,7 +15,14 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: '',
 			field: 'username'
 		},
-		profileImage: {
+		language: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'language'
+		},
+
+		profile_image: {
 			type: DataTypes.STRING(255),
 			allowNull: true,
 			defaultValue: '',
@@ -38,6 +45,27 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			defaultValue: '',
 			field: 'password'
+		},
+		schedule: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'schedule'
+		},
+		user_type: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'user_type'
+		},
+		otp: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'otp'
+		},
+		otp_verified: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'otp_verified'
 		},
 		forgotPassword: {
 			type: DataTypes.STRING(255),
@@ -98,11 +126,52 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: '',
 			field: 'lng'
 		},
-		authKey: {
+		address: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'address'
+		},
+		description: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'description'
+		},
+		open_time: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'open_time'
+		},
+		close_time: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'close_time'
+		},
+		auth_key: {
 			type: DataTypes.STRING(200),
 			allowNull: true,
 			defaultValue: '',
 			field: 'auth_key'
+		},
+		avg_rating: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			field: 'avg_rating'
+		},
+		strike_count: {
+			type: DataTypes.INTEGER(10),
+			allowNull: true,
+			defaultValue: '0',
+			field: 'strike_count'
+		},
+		review_count: {
+			type: DataTypes.INTEGER(10),
+			allowNull: true,
+			defaultValue: '0',
+			field: 'review_count'
 		},
 		deviceType: {
 			type: DataTypes.INTEGER(11),
@@ -114,6 +183,24 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: true,
 			defaultValue: '',
 			field: 'device_token'
+		},
+		access_token: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'access_token'
+		},
+		refresh_token: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'refresh_token'
+		},
+		access_token_save_time: {
+			type: DataTypes.STRING(255),
+			allowNull: true,
+			defaultValue: '',
+			field: 'access_token_save_time'
 		},
 		loginType: {
 			type: DataTypes.INTEGER(11),
@@ -127,6 +214,52 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: '',
 			field: 'socialId'
 		},
+		reward_percentage: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'reward_percentage'
+		},
+		reward_order_count: {
+			type: DataTypes.INTEGER(11),
+			allowNull: true,
+			field: 'reward_order_count'
+		},
+		  subscription_status: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '0',
+      field: 'subscription_status'
+    },
+    customer_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '',
+      field: 'customer_id'
+    },
+    subscription_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '',
+      field: 'subscription_id'
+    },
+    plan_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '',
+      field: 'plan_id'
+    },
+    card_id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '',
+      field: 'card_id'
+    },
+    subscription_json: {
+      type: DataTypes.INTEGER(11),
+      allowNull: true,
+      defaultValue: '',
+      field: 'subscription_json'
+    },
 		createdAt: {
 			type: DataTypes.DATE,
 			allowNull: false,

@@ -29,6 +29,22 @@
                     </div>
                 </a>
                 </div>
+                  <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <a href="../admin/userslist_b"  style="text-decoration:none;">
+                    <div class="info-box bg-orange hover-expand-effect" >
+                        <div class="icon">
+                           <i class="material-icons ">people</i>
+
+                            <!-- <i class="material-icons">contact_support</i> -->
+                        </div>
+                        <div class="content">
+                            
+                            <div class="text">Barbers</div>
+                            <div id="faq" class="number count-to" data-from="0" data-to="<%=countdata.barber%>" data-speed="15" data-fresh-interval="20"></div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <a href="../admin/categories"  style="text-decoration:none;">
                     <div class="info-box bg-pink hover-expand-effect">
@@ -42,33 +58,20 @@
                 </a>  
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <a href="../admin/posts"  style="text-decoration:none;">
+                    <a href="../admin/orders"  style="text-decoration:none;">
                     <div class="info-box bg-blue hover-expand-effect" >
                         <div class="icon">
                             <i class="material-icons"> add_to_photos</i>
                         </div>
                         <div class="content">
                             
-                            <div class="text">POSTS</div>
-                            <div id="posts" class="number count-to" data-from="0" data-to="<%=countdata.post%>" data-speed="15" data-fresh-interval="20"></div>
+                            <div class="text">Orders</div>
+                            <div id="posts" class="number count-to" data-from="0" data-to="<%=countdata.orders_count%>" data-speed="15" data-fresh-interval="20"></div>
                         </div>
                     </div>
                     </a>
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <a href="../admin/data"  style="text-decoration:none;">
-                    <div class="info-box bg-orange hover-expand-effect" >
-                        <div class="icon">
-                            <i class="material-icons">contact_support</i>
-                        </div>
-                        <div class="content">
-                            
-                            <div class="text">FAQ</div>
-                            <div id="faq" class="number count-to" data-from="0" data-to="<%=countdata.faq%>" data-speed="15" data-fresh-interval="20"></div>
-                        </div>
-                    </div>
-                    </a>
-                </div>
+              
      
             </div>
             <!-- #END# Widgets -->
@@ -105,8 +108,7 @@
             </div>
         </div>
             <div class="row clearfix">
-                <!-- Task Info-->
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="card">
                         <div class="header">
                             <h2>Latest Posts</h2>
@@ -137,10 +139,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
 
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div class="card">
                         <div class="header">
                             <h2>Top Users</h2>
@@ -171,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- #END# Task Info -->
                 
                 <!-- #END# Browser Usage -->
@@ -220,11 +222,11 @@
             y: parseInt(category)
         },
         {
-            name: 'Posts',
+            name: 'Orders',
             y: parseInt(post)
         },
         {
-            name: 'FAQ',
+            name: 'Barbers',
             y: parseInt(faq)
         },
        ]

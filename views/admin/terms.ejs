@@ -13,12 +13,25 @@
                             <div class="row clearfix">
                                 <div class="col-sm-12">
                                 <form  enctype='multipart/form-data' method="post" action="update_terms">
+                                   <u> <h6>In English</h6></u>
                                     <div class="row clearfix">
                                        
                                         <div class="col-sm-12">
                                             <div class="form-group">
                                                 <div class="form-line">
                                                     <textarea id="ckeditor" name="terms" class="form-control" required><%=response.termsContent %>
+                                                  </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <u> <h6>In Spanish</h6></u>
+                                    <div class="row clearfix">
+                                       
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="form-line">
+                                                    <textarea id="ckeditor" name="terms_spanish" class="form-control" required><%=response.terms_spanish %>
                                                   </textarea>
                                                 </div>
                                             </div>
@@ -43,6 +56,7 @@
 <% include  layout/footer.ejs %>
 <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
 <script>
+   CKEDITOR.replace( 'terms_spanish' );
    CKEDITOR.replace( 'terms' );
    CKEDITOR.config.height = 400;
 </script>

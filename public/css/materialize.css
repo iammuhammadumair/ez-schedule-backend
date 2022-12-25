@@ -360,11 +360,11 @@ form p:last-child {
 }
 
 .switch label input[type=checkbox]:checked + .lever {
-  background-color: #a6266d;
+  background-color: #3f51b5;
 }
 
 .switch label input[type=checkbox]:checked + .lever:after {
-  background-color: #a6266d;
+  background-color: #3f51b5;
   left: 24px;
 }
 

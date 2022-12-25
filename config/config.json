@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "superdb",
-    "password": "Vsndk@47%$!gh2",
-    "database": "votecast",
+    "username": "root",
+    "password": "root@admin",
+    "database": "barbarz",
     "host": "127.0.0.1",
     "dialect": "mysql",
     "operatorsAliases": false

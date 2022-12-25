@@ -1,0 +1,275 @@
+﻿<% include  layout/header.ejs %>
+<% include  layout/navbar.ejs %>
+
+
+<style>
+
+    .add{
+        color:#de7022 !important;
+    }
+.top {
+    margin-bottom: 29px;
+    float: left;
+    width: 100%;
+}
+.left_side{
+    float: left;
+    padding: 1px 7px;
+    width: 50%;
+}
+    </style>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row clearfix">
+              <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Barbers list</h2>
+                        </div>
+                        <!-- <div class="top">
+                        <div class="col-xs-2">
+                            <br>
+                                <h2 class="card-inside-title">Gender Filter</h2>
+                                <div class="form-line">
+                      
+                                        <select id="dropdown1" class="form-control show-tick" name="status" >
+                                            <option value="">All</option>
+                                           <option value="Male.">Male</option>
+                                           <option value="Female">Female</option>
+                                        </select>
+                                       
+                                    </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <br>
+                                    <h2 class="card-inside-title">Country Filter</h2>
+                                    <div class="form-line">
+                          
+                                            <select id="dropdown2" class="form-control show-tick" name="status" >
+                                                <option value="">All</option>
+                                                <% for(let j in data) { %>
+                                                <option><%=data[j].country%></option>
+                                                <% } %>
+                                            </select>
+                                           
+                                        </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <br>
+                                        <h2 class="card-inside-title">City Filter</h2>
+                                        <div class="form-line">
+                                            
+                                                <select id="dropdown3" class="form-control show-tick" name="status" >
+                                                    <option value="">All</option>
+                                                    <% for(let j in data1) { %>
+                                                        <option><%=data1[j].city%></option>
+                                                        <% } %>
+                                                </select>
+                                               
+                                            </div>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <br>
+                                            <h2 class="card-inside-title">Age Filter</h2>
+                                            <div class="form-line left_side">
+                                               <input type="text" placeholder="MinAge" class="form-control"  id="min">
+                                            </div>
+                                            <div class="form-line left_side">
+                                                <input type="text" placeholder="MaxAge" class="form-control"  id="max"> 
+                                                </div>
+                                        </div>
+                         </div> -->
+                        <div class="body">
+                            <div class="row clearfix" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="table-responsive">
+                                    <table class="table" id="usertable" >
+                                        <thead>
+                                            <tr>
+                                                <th>S.No</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+<!-- 
+                                                <th>City</th>
+                                                <th>State</th>
+                                                <th>Country</th> -->
+                                                <!-- <th>Posts</th> -->
+                                                <!-- <th>Connections</th> -->
+                                                <!-- <th>Votes Sent</th> -->
+                                                <!-- <th>Votes Received</th> -->
+                                                <th class="text-center">Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody>
+                                            <% for(let i in response) { %>
+                                           
+                                             <tr>
+                                                <td><%=parseInt(i)+1%></td>
+                                                <td><%=response[i].username%></td>
+                                                <!-- <td><% if( response[i].gender==1){ %>Male<span style="display:none">.</span><% }
+                                                    else{
+                                                   %>
+                                                  Female
+                                                  <% } %>
+                            
+                                                </td> -->
+                                                <td><%=response[i].email%></td>
+                                                <td><%=response[i].phone%></td>
+                                                <!-- <td><%=response[i].state%></td>
+                                                <td><%=response[i].country%></td>
+                                                <td><%=response[i].totalposts%></td>
+                                                <td><%=response[i].connection%></td>
+                                                <td><%=response[i].sendvote%></td>
+                                                <td><%=response[i].votereceiver%></td> -->
+                                                <td class="text-center">
+                                                    <div class="switch">
+                                                        <label><input class="changestatus"  id="<%=response[i].id%>" table="barbers" type="checkbox" <%=(response[i].status==1) ? 'checked' : "" %> >
+                                                            <span class="lever"></span></label>
+                                                    </div>
+                                                 </td>
+                                                <td class="text-center">
+                                                    <ul class="header-dropdown">
+                                                        <li class="dropdown">
+                                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                                                                <i class="material-icons add">view_list</i>
+                                                            </a>
+                                                            <ul class="dropdown-menu pull-right">
+                                                                <li><a href="javascript:void(0);" rel="<%=response[i].id%>" table="barbers" class="delete waves-effect waves-block"><i class="material-icons"> delete</i>Delete</a></li>
+                                                               <!--  <li><a href="javascript:void(0);" class=" waves-effect waves-block"><i class="material-icons"> remove_red_eye</i>View</a></li> -->
+                                                                <li><a href="/admin/viewuser_b?id=<%=response[i].id%>"   class="edit waves-effect waves-block"><i class="material-icons"> mode_edit</i>View/Edit</a></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                         </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+<% include  layout/footer.ejs %>
+<script src="../../plugins/jquery-datatable/jquery.dataTables.js"></script>
+<script src="../../plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.flash.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/jszip.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/pdfmake.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/vfs_fonts.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.html5.min.js"></script>
+<script src="../../plugins/jquery-datatable/extensions/export/buttons.print.min.js"></script>
+<script src="../../plugins/momentjs/moment.js"></script>
+<script src="../../plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="../../plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+<script type="text/javascript">
+ $('#blah2').click(function(){
+ $('#profieimage').click();
+ });
+ $(".changestatus").change(function(){
+      var id= $(this).attr('id');
+      var table= $(this).attr('table');
+      var status=0;
+       if($(this).prop("checked") == true){
+           status=1;
+        }
+       else if($(this).prop("checked") == false){
+           status=0;
+       }
+       var ajaxurl = 'users_statuschange_b',
+          data = { id: id, table: table,status: status };
+          $.post(ajaxurl, data, function (response) {
+          if(response>0)
+          {
+
+          }
+       });
+        
+        
+ });
+$('.delete').click(function () {
+     let _this = $(this);
+    let id = $(this).attr("rel");
+     let table = $(this).attr("table");
+     swal({
+       title: "Are you sure?",
+       text: "Once deleted, you will not be able to recover this data!",
+       icon: "warning",
+       buttons: true,
+       dangerMode: true,
+     })
+       .then((data) => {
+         if (data) {
+           $.ajax({
+             url: "delete_user_b",
+             type: "post",
+             data: { id: id, table: table },
+             cache: false,
+             success: function (response) {
+                 swal("Proof! Your data has been deleted!", {
+                 icon: "success",
+               });
+               setTimeout(() => {
+                window.location.reload();
+                },3000);
+               
+             }, error(error) {
+               console.error(error);
+             }
+
+           });
+         }
+       });
+   });
+   var table = $('#usertable').DataTable();
+   $('#dropdown1').on('change', function () {
+         table.columns(2).search( this.value ).draw();
+         });
+    $('#dropdown2').on('change', function () {
+        table.columns(6).search( this.value ).draw();
+         });
+    $('#dropdown3').on('change', function () {
+        table.columns(4).search( this.value ).draw();
+         });
+
+
+$.fn.dataTable.ext.search.push(
+function (settings, data, dataIndex) 
+{
+	   
+       min_val = $('#min').val();
+       max_val = $('#max').val();
+   	if(min_val && max_val)
+   	{
+            min_val_time =  min_val;
+            max_val_time =  max_val;
+
+			var startDate = data[3];
+            s_time = startDate;
+			if(s_time >= min_val_time && s_time <= max_val_time)
+			{
+				return true;
+			}
+			return false;
+   	}
+     return true;
+;
+    }
+    );
+
+$('#min, #max').keyup(function () {
+    table.draw();
+});
+ 
+
+</script>
