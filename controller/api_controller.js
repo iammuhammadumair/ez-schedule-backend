@@ -333,6 +333,10 @@ module.exports = {
 				device_type: req.body.device_type,
 				device_token: req.body.device_token
 			};
+
+			console.log('headers =>', req.headers);
+			console.log('body =>', req.body);
+
 			let requestdata = await helper.vaildObject(required, non_required, res);
 			const password = crypto.createHash('sha1').update(requestdata.password).digest('hex');
 			const user_data = await user.findOne({
@@ -1355,6 +1359,9 @@ module.exports = {
 				auth_key: req.headers.auth_key,
 
 			};
+			console.log('req header=>', req.headers);
+			console.log('req body=>', req.body);
+
 			let requestdata = await helper.vaildObject(required, non_required, res);
 
 			var Contentdata = await terms.findOne({
@@ -1381,7 +1388,9 @@ module.exports = {
 
 				}
 			}
+			console.log('free_trial =>', free_trial)
 			Contentdata.dataValues.free_trial = free_trial;
+			console.log('data =>', JSON.stringify(Contentdata.dataValues));
 			let msg = 'Subscription Setting';
 			jsonData.true_status(res, Contentdata, msg)
 
@@ -2451,22 +2460,59 @@ module.exports = {
 				date: req.body.date,
 
 			};
+			console.log('req =>', req.body);
 			const non_required = {
 				current_timestamp: req.body.current_timestamp,
 			};
 
 
 			let requestdata = await helper.vaildObject(required, non_required, res);
-			// console.log(day);
-			// return;
-			console.log(moment.utc().format('YYYY-MM-DD HH:mm:ss'));
+
+
+
+
 
 			const data = await user.findOne({
 				where: {
 					auth_key: requestdata.auth_key,
 				}
 			});
+
+			const barber_data = await user.findOne({
+				where: {
+					id: requestdata.barber_id,
+				}
+			});
+			set = {};
+			set.reward_percentage = barber_data.dataValues.reward_percentage;
+			set.reward_order_count = barber_data.dataValues.reward_order_count;
+			all_completed_order = await orders.findAndCountAll({
+				attributes: ['id'],
+				where: {
+					is_rewarded: 0,
+					status: [3, 4],
+					barber_id: requestdata.barber_id,
+					user_id: data.dataValues.id,
+				}
+			});
+			set.completed_order = all_completed_order.count;
+
+
 			var final = [];
+			const requestDate = moment.unix(req.body.date).format("YYYY-MM-DD");
+			const currentDate = moment.utc().format("YYYY-MM-DD");
+
+			const isRequestDateExpired = moment(requestDate).isBefore(currentDate);
+			console.log('requestDate =>', requestDate);
+			console.log('currentDate =>', currentDate);
+			console.log('isRequestDateExpired =>', isRequestDateExpired);
+
+			if (isRequestDateExpired) {
+				set.time_slots = final;
+				let msg = 'Slot List ';
+				jsonData.true_status(res, set, msg);
+
+			}
 
 			if (data) {
 				console.log(requestdata.current_timestamp);
@@ -2547,33 +2593,9 @@ module.exports = {
 						}
 					}
 				}
-				const barber_data = await user.findOne({
-					where: {
-						id: requestdata.barber_id,
-					}
-				});
-
-				set = {};
-				set.reward_percentage = barber_data.dataValues.reward_percentage;
-				set.reward_order_count = barber_data.dataValues.reward_order_count;
-				all_completed_order = await orders.findAndCountAll({
-					attributes: ['id'],
-					where: {
-						is_rewarded: 0,
-						status: [3, 4],
-						barber_id: requestdata.barber_id,
-						user_id: data.dataValues.id,
-					}
-				});
-				set.completed_order = all_completed_order.count;
 				set.time_slots = final;
-				// if (time_slots) {         
 				let msg = 'Slot List ';
 				jsonData.true_status(res, set, msg);
-				/*} else {
-					let msg = 'Try Again Somthing Wrong';
-					jsonData.true_status(res, msg);
-				}*/
 
 
 			} else {
@@ -4025,6 +4047,10 @@ module.exports = {
 				type: req.body.type,// 1=online ,2=cash
 				return_type: 1,
 			};
+
+			console.log('body =>', req.body)
+			console.log('headers =>', req.headers)
+
 			const non_required = {
 			};
 
@@ -4083,6 +4109,7 @@ module.exports = {
 						// 	throw d.error_message;
 						// }							
 					}
+					console.log('access_token =>', access_token);
 
 					await superagent
 						.post('https://connect.squareup.com/v2/payments')
@@ -4103,7 +4130,9 @@ module.exports = {
 						.set('Content-Type', 'application/json')
 						.set('Authorization', 'Bearer ' + access_token)
 						.end((err, result_p) => {
-							console.log(err);
+							console.log('error =>', err);
+
+							// console.log(err);
 							send = {};
 							if (!empty(err)) {
 								// console.log(err);
@@ -6189,7 +6218,7 @@ module.exports = {
 				first_name: req.body.first_name,
 				last_name: req.body.last_name,
 				phone_number: req.body.phone_number,
-				card_nonce: req.body.card_nonce,
+				// card_nonce: req.body.card_nonce,
 				return_type: 2,
 			};
 			const non_required = {
@@ -6200,10 +6229,10 @@ module.exports = {
 
 			var barber_id = requestdata.barber_id;
 
-			const subscription_amount = 20;
-			const subscriptions_plan_id = "A6A2KUVIP7HKKVCSFCAD56JT";
+			// const subscription_amount = 20;
+			// const subscriptions_plan_id = "A6A2KUVIP7HKKVCSFCAD56JT";
 
-			var _amount = subscription_amount * 100;
+			// var _amount = subscription_amount * 100;
 
 			const barber_data = await user.findOne({
 				attributes: [`id`, `username`, `avg_rating`, `auth_key`, `otp`, `profile_image`, `phone`, `email`, `user_type`, `otp_verified`, `lat`, `lng`, `address`, `description`,
@@ -6212,140 +6241,159 @@ module.exports = {
 					auth_key: requestdata.auth_key,
 				}
 			});
-			if (barber_data) {
-				await superagent
-					.post('https://connect.squareup.com/v2/customers')
-					.send({
-						"idempotency_key": crypto.randomBytes(20).toString('hex'),
-						"family_name": barber_data.dataValues.username,
-						// "last_name":requestdata.last_name,
-						// "family_name":requestdata.first_name,
-						"email_address": barber_data.dataValues.email,
-						"phone_number": barber_data.dataValues.phone,
 
-					}) // sends a JSON post body
-					.set('Square-Version', '2021-03-17')
-					.set('Content-Type', 'application/json')
-					.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
-					.end((err, result_p) => {
-						// console.log(err);
-						send = {};
-						if (!empty(err)) {
-
-							jsonData.wrong_status(res, err);
-
-						} else {
-							if (result_p.status == 200) {
-								var customer_data = JSON.parse(result_p.text);
-								console.log(customer_data.customer.id);
-
-								superagent
-									.post('https://connect.squareup.com/v2/customers/' + customer_data.customer.id + '/cards')
-									.send({
-										// "idempotency_key": crypto.randomBytes(20).toString('hex'),
-										// "family_name":barber_data.dataValues.username,
-										"card_nonce": requestdata.card_nonce,
-										// "family_name":requestdata.first_name,
-										// "email_address": barber_data.dataValues.email,
-										// "phone_number": barber_data.dataValues.phone,
-
-									}) // sends a JSON post body
-									.set('Square-Version', '2021-03-17')
-									.set('Content-Type', 'application/json')
-									.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
-									.end((error, result) => {
-										console.log(error);
-										send = {};
-										if (!empty(error)) {
-
-											jsonData.wrong_status(res, error);
-
-										} else {
-											// console.log(result);
-
-											if (result.status == 200) {
-												var card_data = JSON.parse(result.text);
-												console.log(card_data.card.id);
-
-												superagent
-													.post('https://connect.squareup.com/v2/subscriptions')
-													.send({
-														"idempotency_key": crypto.randomBytes(20).toString('hex'),
-														"location_id": "LH1AJT28EE1K8",
-														"plan_id": subscriptions_plan_id,
-														"customer_id": customer_data.customer.id,
-														"card_id": card_data.card.id,
-
-													}) // sends a JSON post body
-													.set('Square-Version', '2021-03-17')
-													.set('Content-Type', 'application/json')
-													.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
-													.end((error_1, result_1) => {
-														// console.log(err);
-														send = {};
-														if (!empty(error_1)) {
-
-															jsonData.wrong_status(res, error_1);
-
-														} else {
-															// console.log(result_1);
-															if (result_1.status == 200) {
-																var subscriptions = JSON.parse(result_1.text);
-																// console.log(subscriptions.card.id);
-																const save_data = user.update({
-																	subscription_status: 1,
-																	customer_id: customer_data.customer.id,
-																	plan_id: subscriptions_plan_id,
-																	card_id: requestdata.card_nonce,
-																	subscription_id: subscriptions.subscription.id,
-																	subscription_json: result_1.text
-																},
-																	{
-																		where: {
-																			id: barber_id,
-																		}
-																	}
-																);
-															} else {
-																throw "Something Wrong";
-															}
-
-
-															let msg = 'Subscribed successfully';
-															jsonData.true_status(res, subscriptions, msg);
-														}
-
-													});
-
-											} else {
-												throw "Invalid card nonce";
-											}
-
-
-											// let msg = 'Payment done successfully';
-											// jsonData.true_status(res,result, msg);               
-										}
-
-									});
-
-							} else {
-								throw "customer not created"
-							}
-
-
-							// let msg = 'Payment done successfully';
-							// jsonData.true_status(res,result_p, msg);               
-						}
-
-					});
-
-			} else {
+			if (!barber_data)
 				throw "Invalid authorization";
-			}
 
 
-			// console.log(all_requests);
+			await user.update({
+				subscription_status: 1,
+				// customer_id: customer_data.customer.id,
+				// plan_id: subscriptions_plan_id,
+				// card_id: requestdata.card_nonce,
+				// subscription_id: subscriptions.subscription.id,
+				// subscription_json: result_1.text
+			},
+				{
+					where: {
+						id: barber_id,
+					}
+				}
+			);
 
+			let msg = 'Subscribed successfully';
+			jsonData.true_status(res, [], msg);
+
+			// if (barber_data) {
+			// 	await superagent
+			// 		.post('https://connect.squareup.com/v2/customers')
+			// 		.send({
+			// 			"idempotency_key": crypto.randomBytes(20).toString('hex'),
+			// 			"family_name": barber_data.dataValues.username,
+			// 			// "last_name":requestdata.last_name,
+			// 			// "family_name":requestdata.first_name,
+			// 			"email_address": barber_data.dataValues.email,
+			// 			"phone_number": barber_data.dataValues.phone,
+
+			// 		}) // sends a JSON post body
+			// 		.set('Square-Version', '2021-03-17')
+			// 		.set('Content-Type', 'application/json')
+			// 		.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
+			// 		.end((err, result_p) => {
+			// 			// console.log(err);
+			// 			send = {};
+			// 			if (!empty(err)) {
+
+			// 				jsonData.wrong_status(res, err);
+
+			// 			} else {
+			// 				if (result_p.status == 200) {
+			// 					var customer_data = JSON.parse(result_p.text);
+			// 					console.log(customer_data.customer.id);
+
+			// 					superagent
+			// 						.post('https://connect.squareup.com/v2/customers/' + customer_data.customer.id + '/cards')
+			// 						.send({
+			// 							// "idempotency_key": crypto.randomBytes(20).toString('hex'),
+			// 							// "family_name":barber_data.dataValues.username,
+			// 							"card_nonce": requestdata.card_nonce,
+			// 							// "family_name":requestdata.first_name,
+			// 							// "email_address": barber_data.dataValues.email,
+			// 							// "phone_number": barber_data.dataValues.phone,
+
+			// 						}) // sends a JSON post body
+			// 						.set('Square-Version', '2021-03-17')
+			// 						.set('Content-Type', 'application/json')
+			// 						.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
+			// 						.end((error, result) => {
+			// 							console.log(error);
+			// 							send = {};
+			// 							if (!empty(error)) {
+
+			// 								jsonData.wrong_status(res, error);
+
+			// 							} else {
+			// 								// console.log(result);
+
+			// 								if (result.status == 200) {
+			// 									var card_data = JSON.parse(result.text);
+			// 									console.log(card_data.card.id);
+
+			// 									superagent
+			// 										.post('https://connect.squareup.com/v2/subscriptions')
+			// 										.send({
+			// 											"idempotency_key": crypto.randomBytes(20).toString('hex'),
+			// 											"location_id": "LH1AJT28EE1K8",
+			// 											"plan_id": subscriptions_plan_id,
+			// 											"customer_id": customer_data.customer.id,
+			// 											"card_id": card_data.card.id,
+
+			// 										}) // sends a JSON post body
+			// 										.set('Square-Version', '2021-03-17')
+			// 										.set('Content-Type', 'application/json')
+			// 										.set('Authorization', 'Bearer EAAAEKx1T18tzQeWjmuSYa5oftdJAyx4L8tqhhGRpgXYBFHDf1UaLYNT3vdNLYr7')
+			// 										.end((error_1, result_1) => {
+			// 											// console.log(err);
+			// 											send = {};
+			// 											if (!empty(error_1)) {
+
+			// 												jsonData.wrong_status(res, error_1);
+
+			// 											} else {
+			// 												// console.log(result_1);
+			// 												if (result_1.status == 200) {
+			// 													var subscriptions = JSON.parse(result_1.text);
+			// 													// console.log(subscriptions.card.id);
+			// 													const save_data = user.update({
+			// 														subscription_status: 1,
+			// 														customer_id: customer_data.customer.id,
+			// 														plan_id: subscriptions_plan_id,
+			// 														card_id: requestdata.card_nonce,
+			// 														subscription_id: subscriptions.subscription.id,
+			// 														subscription_json: result_1.text
+			// 													},
+			// 														{
+			// 															where: {
+			// 																id: barber_id,
+			// 															}
+			// 														}
+			// 													);
+			// 												} else {
+			// 													throw "Something Wrong";
+			// 												}
+
+
+			// 												let msg = 'Subscribed successfully';
+			// 												jsonData.true_status(res, subscriptions, msg);
+			// 											}
+
+			// 										});
+
+			// 								} else {
+			// 									throw "Invalid card nonce";
+			// 								}
+
+
+			// 								// let msg = 'Payment done successfully';
+			// 								// jsonData.true_status(res,result, msg);               
+			// 							}
+
+			// 						});
+
+			// 				} else {
+			// 					throw "customer not created"
+			// 				}
+
+
+			// 				// let msg = 'Payment done successfully';
+			// 				// jsonData.true_status(res,result_p, msg);               
+			// 			}
+
+			// 		});
+
+			// } else {
+			// 	throw "Invalid authorization";
+			// }
 
 
 		} catch (errr) {
